@@ -18,6 +18,7 @@ low = .25;
 high = 1;
 
 swearList = {
+    hello: 42,
     dipshit: low,
     shit: low,
     shitting: low,
@@ -248,6 +249,7 @@ discordClient.on('message', async (msg) => {
                 if (!guildMap.has(mapKey)){
                     await connect(msg, mapKey);
                     showJarStatus(msg)
+                    io.emit('bot-connected',msg.author)
                 }else
                     msg.reply('Already connected')
             }
@@ -259,6 +261,7 @@ discordClient.on('message', async (msg) => {
                 guildMap.delete(mapKey)
                 showJarStatus(msg)
                 msg.reply("Disconnected.")
+                io.emit('bot-disconnected',msg.author)
             } else {
                 msg.reply("Cannot leave because not connected.")
             }
@@ -424,7 +427,8 @@ function process_commands_query(txt, mapKey, user) {
                 userRecord[user.username]['swearCount'] = intersection.size;
                 userRecord[user.username]['swearCost'] = swearSum;
             }
-            io.emit('time',user.username+','+Array.from(intersection))
+            io.emit('time',{'username': user.username, "swears": Array.from(intersection),'jarTotal':jarTotal})
+            
             val.text_Channel.send(user.username+','+Array.from(intersection))
         }
     }

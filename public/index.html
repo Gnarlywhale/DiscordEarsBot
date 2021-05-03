@@ -11,6 +11,12 @@
         el = document.getElementById('server-time');
         el.innerHTML = timeString;
       });
+      socket.on('bot-connected',(payload)=> {
+        console.log(payload);
+      })
+      socket.on('bot-disconnected',(payload)=> {
+        console.log(payload);
+})
     </script>
   </head>
   <body>
