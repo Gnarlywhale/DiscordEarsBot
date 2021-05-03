@@ -344,7 +344,7 @@ function process_commands_query(txt, mapKey, user) {
     if (txt && txt.length) {
         let val = guildMap.get(mapKey);
         val.text_Channel.send(user.username + ': ' + txt)
-        io.emit('time', new Date().toTimeString())
+        io.emit('time', user.username + ': ' + txt)
     }
 }
 
