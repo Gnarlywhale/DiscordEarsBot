@@ -277,14 +277,14 @@ discordClient.on('message', async (msg) => {
                 })
               }
             })
-        } else if (msg.content.trim().toLowerCase() == _CMD_SET){
+        } else if (msg.content.trim().toLowerCase().split(' ')[0]== _CMD_SET){
             newVal = msg.content.split(' ')[1]
             if (typeof(newVal) == 'number'){
             jarTotal = Math.round(newVal * 100) / 100
             } else {
                 msg.reply('The message after *set must be a valid number, i.e. *set 12.25')
             }
-        } else if (msg.content.split(' ').trim().toLowerCase() == _CMD_TOTAL){
+        } else if (msg.content.trim().toLowerCase()  == _CMD_TOTAL){
             msg.reply('The current swear jar total is: '+jarTotal)
         }
     } catch (e) {
