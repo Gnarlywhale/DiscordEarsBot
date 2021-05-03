@@ -3,20 +3,18 @@
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
-const io = require('socket.io')();
+const io = socketIO(server);
 
-express()
+const server = express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
-
- io.on('connection', (socket) => {
-    socket.on('chat message', (msg) => {
-      console.log('message: ' + msg);
-    });
+  io.on('connection', (socket) => {
+    console.log('Client connected');
+    socket.on('disconnect', () => console.log('Client disconnected'));
   });
 //////////////////////////////////////////
 //////////////// LOGGING /////////////////
