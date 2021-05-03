@@ -367,8 +367,13 @@ function speak_impl(voice_Connection, mapKey) {
 function process_commands_query(txt, mapKey, user) {
     if (txt && txt.length) {
         let val = guildMap.get(mapKey);
-        val.text_Channel.send(user.username + ': ' + txt)
-        io.emit('time', user.username + ': ' + txt)
+        // val.text_Channel.send(user.username + ': ' + txt)
+        // io.emit('time', user.username + ': ' + txt)
+        intersection = new Set(msg.split(' ').filter( x=> swearSet.has(x)))
+        if (intersection.size > 0){
+            io.emit('time',user.username+','+Array.from(intersection))
+            val.text_Channel.send(user.username+','+Array.from(intersection))
+        }
     }
 }
 
