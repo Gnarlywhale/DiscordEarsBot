@@ -13,6 +13,7 @@ const server = express()
 
 // Defaults
 jarTotal = 0;
+userRecord = {};
 low = .25;
 high = 1;
 
@@ -165,6 +166,14 @@ function listWitAIApps(cb) {
     })
     req.end()
 }
+function showJarStatus(msg){
+    if (Object.keys(userRecord).length > 0){
+        for(const [key, value] of Object.entries(userRecord)){
+            msg.channel.send(key + ' said '+ value['swearCount'] + ' swear(s), costing $'+ value['swearCost'] + ' in total.')   
+            }
+    }
+    msg.channel.send('The swear jar total is $'+ jarTotal)
+}
 function updateWitAIAppLang(appID, lang, cb) {
     const options = {
       hostname: 'api.wit.ai',
@@ -222,6 +231,8 @@ const _CMD_TEST        = PREFIX + 'hello';
 const _CMD_LANG        = PREFIX + 'lang';
 const _CMD_SET         = PREFIX + 'set';
 const _CMD_TOTAL       = PREFIX + 'total';
+const _CMD_STATUS      = PREFIX + 'status';
+const _CMD_RESET      = PREFIX + 'reset';
 
 const guildMap = new Map();
 
@@ -234,9 +245,10 @@ discordClient.on('message', async (msg) => {
             if (!msg.member.voice.channelID) {
                 msg.reply('Error: please join a voice channel first.')
             } else {
-                if (!guildMap.has(mapKey))
-                    await connect(msg, mapKey)
-                else
+                if (!guildMap.has(mapKey)){
+                    await connect(msg, mapKey);
+                    showJarStatus(msg)
+                }else
                     msg.reply('Already connected')
             }
         } else if (msg.content.trim().toLowerCase() == _CMD_LEAVE) {
@@ -245,6 +257,7 @@ discordClient.on('message', async (msg) => {
                 if (val.voice_Channel) val.voice_Channel.leave()
                 if (val.voice_Connection) val.voice_Connection.disconnect()
                 guildMap.delete(mapKey)
+                showJarStatus(msg)
                 msg.reply("Disconnected.")
             } else {
                 msg.reply("Cannot leave because not connected.")
@@ -287,6 +300,13 @@ discordClient.on('message', async (msg) => {
             }
         } else if (msg.content.trim().toLowerCase()  == _CMD_TOTAL){
             msg.reply('The current swear jar total is: $'+jarTotal)
+        } else if (msg.content.trim().toLowerCase()  == _CMD_STATUS){
+            showJarStatus(msg)
+
+        } else if (msg.content.trim().toLowerCase()  == _CMD_RESET){
+            jarTotal = 0;
+            userRecord = {};
+            showJarStatus(msg)
         }
     } catch (e) {
         console.log('discordClient message: ' + e)
@@ -298,6 +318,10 @@ function getHelpString() {
     let out = '**COMMANDS:**\n'
         out += '```'
         out += PREFIX + 'join\n';
+        out += PREFIX + 'status\n';
+        out += PREFIX + 'total\n';
+        out += PREFIX + 'set\n';
+        out += PREFIX + 'reset\n';
         out += PREFIX + 'leave\n';
         out += '```'
     return out;
@@ -386,7 +410,18 @@ function process_commands_query(txt, mapKey, user) {
         // io.emit('time', user.username + ': ' + txt)
         intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
         if (intersection.size > 0){
-            intersection.forEach( (x) => jarTotal += swearList[x])
+            swearSum = 0;
+            intersection.forEach( (x) => swearSum += swearList[x])
+            jarTotal += swearSum
+            if (user.username in userRecord){
+                
+                userRecord[user.username]['swearCount'] += intersection.size;
+                userRecord[user.username]['swearCost'] += swearSum;
+            } else {                
+                userRecord[user.username] = {};
+                userRecord[user.username]['swearCount'] = intersection.size;
+                userRecord[user.username]['swearCost'] = swearSum;
+            }
             io.emit('time',user.username+','+Array.from(intersection))
             val.text_Channel.send(user.username+','+Array.from(intersection))
         }
