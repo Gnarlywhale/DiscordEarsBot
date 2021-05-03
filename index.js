@@ -3,7 +3,7 @@
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
-const io = require('socket.io')(https);
+const io = require('socket.io')();
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
