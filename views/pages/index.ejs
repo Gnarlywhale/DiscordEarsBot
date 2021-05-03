@@ -1,8 +1,11 @@
 <html>
 <head>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.23.0/dist/phaser.js"></script>
+  <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+
   <style>body { margin: 0; }</style>
   <script>
+    const socket = io();
     let textObject = null;
     const width = 1920;
     const height = 1080;
