@@ -8,7 +8,10 @@ const socketIO = require('socket.io');
 
 
 const server = express()
-  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+//   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+  .use(express.static(path.join(__dirname, 'public')))
+  .set('views', path.join(__dirname, 'views'))
+  .get('/', (req, res) =>  res.sendFile(INDEX, { root: __dirname }))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 // Defaults
