@@ -4,7 +4,9 @@
     <script>
       let socket = io();
       let el;
-
+      socket.on("connect", () => {
+  console.log(socket.connected); // true
+});
       socket.on('time', (timeString) => {
         el = document.getElementById('server-time');
         el.innerHTML = timeString;
