@@ -4,11 +4,11 @@
     <style>
     #jarDiv {
       opacity: 0;
-      transition: opacity 2s;
+      transition: opacity 1s;
     }
     #jarDiv.fadeIn {
       opacity: 1;
-      transition: opacity 2s;
+      transition: opacity 1s;
     }
     </style>
     <script>
@@ -25,7 +25,9 @@
         console.log(payload);
         var jarDiv = document.getElementById('jarDiv')
         jarDiv.classList.toggle('fadeIn');
-        // jarDiv.classList.toggle('fadeIn');
+        await sleep(2000);
+
+        jarDiv.classList.toggle('fadeIn');
       })
       socket.on('bot-disconnected',(payload)=> {
         console.log(payload);
