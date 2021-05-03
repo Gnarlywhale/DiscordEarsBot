@@ -386,6 +386,7 @@ function process_commands_query(txt, mapKey, user) {
         // io.emit('time', user.username + ': ' + txt)
         intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
         if (intersection.size > 0){
+            intersection.forEach( (x) => jarTotal += swearList[x])
             io.emit('time',user.username+','+Array.from(intersection))
             val.text_Channel.send(user.username+','+Array.from(intersection))
         }
