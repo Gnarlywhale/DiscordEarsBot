@@ -23,15 +23,18 @@
       });
       socket.on('bot-connected',(payload)=> {
         console.log(payload);
-        var jarDiv = document.getElementById('jarDiv')
-        jarDiv.classList.toggle('fadeIn');
-        await sleep(2000);
-
-        jarDiv.classList.toggle('fadeIn');
+        toggleJar();
       })
       socket.on('bot-disconnected',(payload)=> {
         console.log(payload);
 })
+async function toggleJar(){
+  var jarDiv = document.getElementById('jarDiv')
+        jarDiv.classList.toggle('fadeIn');
+        await sleep(2000);
+
+        jarDiv.classList.toggle('fadeIn');
+}
     </script>
   </head>
   <body>
