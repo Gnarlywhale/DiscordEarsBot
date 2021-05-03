@@ -24,7 +24,7 @@ const io = socketIO(server);
 //     socket.on('disconnect', () => console.log('Client disconnected'));
 //   });
   
-  setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+//   setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 //////////////////////////////////////////
 //////////////// LOGGING /////////////////
 //////////////////////////////////////////
@@ -344,6 +344,7 @@ function process_commands_query(txt, mapKey, user) {
     if (txt && txt.length) {
         let val = guildMap.get(mapKey);
         val.text_Channel.send(user.username + ': ' + txt)
+        io.emit('time', new Date().toTimeString())
     }
 }
 
