@@ -23,15 +23,20 @@
       });
       socket.on('bot-connected',(payload)=> {
         console.log(payload);
+        toggleJar();
+      })
+      socket.on('bot-disconnected',(payload)=> {
+        console.log(payload);
+        toggleJar();
+})
+async function toggleJar(payload){
+  // payload can be used to contain things like message 1, message 2, top string, bot string, etc
+  var jarDiv = document.getElementById('jarDiv')
         jarDiv.classList.toggle('fadeIn');
         await new Promise(r => setTimeout(r, 2000));
 
         jarDiv.classList.toggle('fadeIn');
-      })
-      socket.on('bot-disconnected',(payload)=> {
-        console.log(payload);
-})
-
+}
     </script>
   </head>
   <body>
