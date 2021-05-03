@@ -7,9 +7,12 @@
 
     </style>
   <script>
-     let socket = io();
+    let socket = io();
       let el;
-
+      console.log('starting')
+      socket.on('connection', (socket) => {
+    console.log('Client connected');
+      });
       socket.on('time', (timeString) => {
         el = document.getElementById('server-time');
         el.innerHTML = 'Server time: ' + timeString;
