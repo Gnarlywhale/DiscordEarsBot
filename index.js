@@ -278,9 +278,10 @@ discordClient.on('message', async (msg) => {
               }
             })
         } else if (msg.content.trim().toLowerCase().split(' ')[0]== _CMD_SET){
-            newVal = msg.content.split(' ')[1]
+            newVal = Math.round(msg.content.split(' ')[1] * 100) / 100;
             if (typeof(newVal) == 'number'){
             jarTotal = Math.round(newVal * 100) / 100
+            msg.reply('The new swear jar total is:' + jarTotal)
             } else {
                 msg.reply('The message after *set must be a valid number, i.e. *set 12.25')
             }
