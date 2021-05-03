@@ -1,13 +1,39 @@
-<!DOCTYPE html>
 <html>
 <head>
-  <!-- <%- include ("../partials/header.ejs") %> -->
-  <title>SwearJar</title>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.23.0/dist/phaser.js"></script>
+  <style>body { margin: 0; }</style>
+  <script>
+    let textObject = null;
+    const width = 1920;
+    const height = 1080;
+    const phaserGame = new Phaser.Game({
+      type: Phaser.WEBGL,
+      scale: {
+        mode: Phaser.Scale.FIT,
+        width,
+        height,
+      },
+      transparent: true,
+      scene: {
+        update,
+        create,
+      },
+    });
+
+    function update(time, delta) {
+      textObject.y -= delta / 20;
+    }
+
+    function create() {
+      textObject = this.add.text(0, 0, "Hello world", {
+        font: "64px Lato",
+        fill: "#0000ff"
+      });
+
+      textObject.x = width / 2 - textObject.displayWidth / 2;
+      textObject.y = height + textObject.displayHeight;
+    }
+  </script>
 </head>
-
-<body>
-
- <img src="jar.png"/>
-
-</body>
+<body></body>
 </html>
