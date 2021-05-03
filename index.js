@@ -10,7 +10,31 @@ const server = express()
   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
+low = .25
+high = 1
 
+swearList = {
+    dipshit: low,
+    shit: low,
+    shitting: low,
+    fucker: low,
+    motherfucker: low,
+    fuck: low,
+    fucking: low,
+    goddamn:low,
+    bitch: high,
+    balls: low,
+    cunt: high,
+    fuckers: low,
+    motherfuckers: low,
+    asshole: low,
+    assholes: low,
+    ass: low,
+    assis: low,
+    fatass: low,
+    dick: low
+};
+swearSet = new Set(Object.keys(swearList));
 // const server = express()
 //   .use(express.static(path.join(__dirname, 'public')))
 //   .set('views', path.join(__dirname, 'views'))
@@ -321,7 +345,7 @@ function speak_impl(voice_Connection, mapKey) {
             const duration = buffer.length / 48000 / 4;
             console.log("duration: " + duration)
 
-            if (duration < 1.0 || duration > 19) { // 20 seconds max dur
+            if (duration < 0.1 || duration > 19) { // 20 seconds max dur
                 console.log("TOO SHORT / TOO LONG; SKPPING")
                 return;
             }
