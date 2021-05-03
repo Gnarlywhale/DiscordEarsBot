@@ -1,0 +1,52 @@
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.23.0/dist/phaser.js"></script>
+  <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+
+  <style>
+
+    </style>
+  <script>
+     let socket = io();
+      let el;
+
+      socket.on('time', (timeString) => {
+        el = document.getElementById('server-time');
+        el.innerHTML = 'Server time: ' + timeString;
+      });
+    // let textObject = null;
+    // const width = 1920;
+    // const height = 1080;
+    // const phaserGame = new Phaser.Game({
+    //   type: Phaser.WEBGL,
+    //   scale: {
+    //     mode: Phaser.Scale.FIT,
+    //     width,
+    //     height,
+    //   },
+    //   transparent: true,
+    //   scene: {
+    //     update,
+    //     create,
+    //   },
+    // });
+
+    // function update(time, delta) {
+    //   textObject.y -= delta / 20;
+    // }
+
+    // function create() {
+    //   textObject = this.add.text(0, 0, "Hello world", {
+    //     font: "64px Lato",
+    //     fill: "#0000ff"
+    //   });
+
+    //   textObject.x = width / 2 - textObject.displayWidth / 2;
+    //   textObject.y = height + textObject.displayHeight;
+    // }
+  </script>
+</head>
+<body>
+    <p id="server-time">test</p>
+</body>
+</html>
