@@ -221,7 +221,7 @@ const _CMD_DEBUG       = PREFIX + 'debug';
 const _CMD_TEST        = PREFIX + 'hello';
 const _CMD_LANG        = PREFIX + 'lang';
 const _CMD_SET         = PREFIX + 'set';
-const _CMD_SET         = PREFIX + 'total';
+const _CMD_TOTAL       = PREFIX + 'total';
 
 const guildMap = new Map();
 
