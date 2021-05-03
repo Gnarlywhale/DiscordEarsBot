@@ -12,17 +12,12 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
-  io.on('connection', function(socket) {
-    console.log('A user connected');
-    io.emit('test', 'these')
-    io.emit('test', 'are')
-    io.emit('test', 'test')
-    io.emit('test', 'messages')
-    //Whenever someone disconnects this piece of code executed
-    socket.on('disconnect', function () {
-       console.log('A user disconnected');
+
+ io.on('connection', (socket) => {
+    socket.on('chat message', (msg) => {
+      console.log('message: ' + msg);
     });
- });
+  });
 //////////////////////////////////////////
 //////////////// LOGGING /////////////////
 //////////////////////////////////////////
