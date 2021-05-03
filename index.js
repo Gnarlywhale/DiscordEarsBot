@@ -6,12 +6,15 @@ const PORT = process.env.PORT || 5000
 const INDEX = 'public/index.html';
 const socketIO = require('socket.io');
 
+
 const server = express()
   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-low = .25
-high = 1
+// Defaults
+jarTotal = 0;
+low = .25;
+high = 1;
 
 swearList = {
     dipshit: low,
@@ -217,6 +220,8 @@ const _CMD_LEAVE       = PREFIX + 'leave';
 const _CMD_DEBUG       = PREFIX + 'debug';
 const _CMD_TEST        = PREFIX + 'hello';
 const _CMD_LANG        = PREFIX + 'lang';
+const _CMD_SET         = PREFIX + 'set';
+const _CMD_SET         = PREFIX + 'total';
 
 const guildMap = new Map();
 
@@ -272,6 +277,15 @@ discordClient.on('message', async (msg) => {
                 })
               }
             })
+        } else if (msg.content.trim().toLowerCase() == _CMD_SET){
+            newVal = msg.content.split(' ')[1]
+            if (typeof(newVal) == 'number'){
+            jarTotal = Math.round(newVal * 100) / 100
+            } else {
+                msg.reply('The message after *set must be a valid number, i.e. *set 12.25')
+            }
+        } else if (msg.content.split(' ').trim().toLowerCase() == _CMD_TOTAL){
+            msg.reply('The current swear jar total is: '+jarTotal)
         }
     } catch (e) {
         console.log('discordClient message: ' + e)
