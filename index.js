@@ -240,6 +240,21 @@ const _CMD_RESET      = PREFIX + 'reset';
 
 const guildMap = new Map();
 
+function payloadFactory(message,payload = []){
+    if (payload.length == 0){
+        payload = Array(message)
+    } else {
+        payload.push(message);
+    }
+    return payload
+}
+function messageFactory ({top='',middle='',bot='',duration = 1} ={}){
+    message = {'duration':duration};
+    if (top.length != 0) message['top-text'] = top;
+    if (middle.length != 0) message['middle-text'] = middle;
+    if (bot.length != 0) message['bot-text'] = bot;
+return message
+}
 
 discordClient.on('message', async (msg) => {
     try {
@@ -252,7 +267,7 @@ discordClient.on('message', async (msg) => {
                 if (!guildMap.has(mapKey)){
                     await connect(msg, mapKey);
                     showJarStatus(msg)
-                    io.emit('bot-connected',msg.author)
+                    io.emit('bot-connected',Array(messageFactory({middle:'Swear Jar Connected'})))
                 }else
                     msg.reply('Already connected')
             }

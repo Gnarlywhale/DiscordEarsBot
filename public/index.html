@@ -1,10 +1,50 @@
 <html>
   <head>
     <script src="/socket.io/socket.io.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<!-- Palette referecnce https://coolors.co/00e9e2-ff7984-f7a25f-65e7bb-ec83ab-9384e3 -->
     <style>
+      body{
+        font-family: 'Anton', sans-serif;
+        text-shadow: 2px 2px #000000;
+      }
+      h1{
+        font-size: 4em;
+        /* color: #9384E3; */
+        color: #00E9E2
+      }
+      h2{
+        font-size: 2.5em;
+        /* color: #65E7BB; */
+        color: #FF7984;
+      }
     #jarDiv {
-      opacity: 0;
+      opacity: 1;
       transition: opacity 1s;
+      width:612px;
+      position:relative;
+      text-align:center;
+      /* color:black; */
+    }
+    #top-text{
+      position:absolute;
+      top: 15%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      
+    }
+    #middle-text{
+      position:absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
+    #bot-text{
+      position:absolute;
+      top: 85%;
+      left: 50%;
+      transform: translate(-50%,-50%);
     }
     #jarDiv.fadeIn {
       opacity: 1;
@@ -42,7 +82,10 @@ async function toggleJar(payload){
   <body>
     <p id="server-time"></p>
     <div id=jarDiv>
-      <img src='./jar.png'/>
+      <img src='./jar.png' style="width:100%"/>
+      <h2 id="top-text">Some Top Text</h2>
+      <h1 id="middle-text">Swear Jar Connected</h1>
+      <h2 id="bot-text">Some Bottom Text</h2>
     </div>
   </body>
 </html
