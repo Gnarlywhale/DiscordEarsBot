@@ -76,8 +76,8 @@ async function toggleJar(payload){
   // payload can be used to contain things like message 1, message 2, top string, bot string, etc  
       document.getElementById('jar').classList.toggle('fadeIn');
         
-        payload.forEach((message) => {
-          duration = message.duration;
+      for(message in payload){
+        duration = message.duration;
         delete message.duration;
         for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)
@@ -90,7 +90,22 @@ async function toggleJar(payload){
           text.innerHTML = value;
           text.classList.toggle('fadeIn');
         }     
-        });
+      }
+        // payload.forEach(async (message) => {
+        //   duration = message.duration;
+        // delete message.duration;
+        // for(const [key, value] of Object.entries(message)){
+        //   text = document.getElementById(key)
+        //   text.innerHTML = value;
+        //   text.classList.toggle('fadeIn');
+        // }       
+        // await new Promise(r => setTimeout(r, duration));  
+        // for(const [key, value] of Object.entries(message)){
+        //   text = document.getElementById(key)
+        //   text.innerHTML = value;
+        //   text.classList.toggle('fadeIn');
+        // }     
+        // });
         
 
       document.getElementById('jar').classList.toggle('fadeIn');
