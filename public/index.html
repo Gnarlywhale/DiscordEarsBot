@@ -88,12 +88,10 @@ async function toggleJar(payload){
         // fade in
         for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)
+          if (text.innerText == value) continue;
+          if (text.classList.contains('fadeIn')) text.classList.toggle('fadeIn');
 
-          if (text.innerText != value && text.classList.contains('fadeIn'))  {        
-          text.classList.toggle('fadeIn');
-        }
         text.innerText = value;
-        if (!text.classList.contains('fadeIn'))
           text.classList.toggle('fadeIn');
         
         }
