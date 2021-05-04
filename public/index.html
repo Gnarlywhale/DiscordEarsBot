@@ -93,6 +93,7 @@ async function renderSwears(payload){
         message = payload.shift();
         // fade out the middle text
         midtext.classList.toggle('fadeIn');
+        await new Promise(r => setTimeout(r, message['duration']));
         // swap text
         midtext.innerText = message['middle-text']
         // fade it back in 
