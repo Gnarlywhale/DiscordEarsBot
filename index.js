@@ -248,7 +248,7 @@ function payloadFactory(message,payload = []){
     }
     return payload
 }
-function messageFactory ({top='',middle='',bot='',duration = 2} ={}){
+function messageFactory ({top='',middle='',bot='',duration = 2000} ={}){
     message = {'duration':duration};
     if (top.length != 0) message['top-text'] = top;
     if (middle.length != 0) message['middle-text'] = middle;
