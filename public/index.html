@@ -20,7 +20,7 @@
         color: #FF7984;
       }
     #jarDiv {
-      opacity: 1;
+      opacity: 0;
       transition: opacity 1s;
       width:612px;
       position:relative;
@@ -77,15 +77,25 @@ async function toggleJar(payload){
 
         jarDiv.classList.toggle('fadeIn');
 }
+// Payload design:
+// payload{
+//  messageCount: #,
+//  messages{
+//    top-text (opt): string,
+//    middle-text (opt): string,
+//    bot-text (opt): string,
+//    length (default 2): #s
+//  }
+// }
     </script>
   </head>
   <body>
     <p id="server-time"></p>
     <div id=jarDiv>
       <img src='./jar.png' style="width:100%"/>
-      <h2 id="top-text">Some Top Text</h2>
-      <h1 id="middle-text">Swear Jar Connected</h1>
-      <h2 id="bot-text">Some Bottom Text</h2>
+      <h2 id="top-text"></h2>
+      <h1 id="middle-text"></h1>
+      <h2 id="bot-text"></h2>
     </div>
   </body>
 </html
