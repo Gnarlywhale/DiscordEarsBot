@@ -68,6 +68,10 @@
         console.log(payload);
         toggleJar(payload);
       })
+      socket.on('swear',(payload)=> {
+        console.log(payload);
+        toggleJar(payload);
+      })
       socket.on('bot-disconnected',(payload)=> {
         console.log(payload);
         toggleJar(payload);
