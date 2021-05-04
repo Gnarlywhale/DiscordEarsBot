@@ -77,7 +77,7 @@ async function toggleJar(payload){
         payload.forEach( async (message) => {
           duration = message.duration;
         delete message.duration;
-        for(const [key, value] of message.entities){
+        for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)
           text.innerHTML = value;
           text.classList.toggle(fadeIn);
