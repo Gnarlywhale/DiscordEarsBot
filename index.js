@@ -295,7 +295,13 @@ discordClient.on('message', async (msg) => {
                 val.debug = true;
         }
         else if (msg.content.trim().toLowerCase() == _CMD_TEST) {
-            msg.reply('hello back =)')
+            msg.reply('Sending Test Payload')
+            swearPayload = Array();
+            intersection = new Set(["fuck","shit","bitch"]);
+            user = {'username': msg.author.username};
+            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
+            swearPayload.push(messageFactory({top: 'Current Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
+            io.emit('swear',swearPayload)
         }
         else if (msg.content.split('\n')[0].split(' ')[0].trim().toLowerCase() == _CMD_LANG) {
             const lang = msg.content.replace(_CMD_LANG, '').trim().toLowerCase()
@@ -446,7 +452,7 @@ function process_commands_query(txt, mapKey, user) {
                 userRecord[user.username]['swearCost'] = swearSum;
             }
 
-            Array(messageFactory({top: user.username+' said', middle:''}))
+            
             swearPayload = Array();
             for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Current Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
