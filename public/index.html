@@ -46,7 +46,7 @@
       left: 50%;
       transform: translate(-50%,-50%);
     }
-    #jarDiv.fadeIn {
+    .fadeIn {
       opacity: 1;
       transition: opacity 1s;
     }
@@ -80,7 +80,7 @@ async function toggleJar(payload){
         for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)
           text.innerHTML = value;
-          text.classList.toggle(fadeIn);
+          text.classList.toggle('fadeIn');
         }       
         await new Promise(r => setTimeout(r, duration));  
         });
