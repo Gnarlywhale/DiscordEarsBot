@@ -96,7 +96,7 @@ async function toggleJar(payload){
           
         }     
         // dont include a delay for the last message
-        if (count++ <= payload.length) await new Promise(r => setTimeout(r, duration));  
+        if (count++ < payload.length) await new Promise(r => setTimeout(r, duration));  
       }
         // payload.forEach(async (message) => {
         //   duration = message.duration;
