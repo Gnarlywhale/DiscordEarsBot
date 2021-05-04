@@ -82,27 +82,28 @@ async function toggleJar(payload){
       count = 0;      
       
       for(message of payload){
-        hold = [];
+        
         duration = message.duration;
-        delete message.duration;        
+        delete message.duration;      
+        // Check if the current text doesn't match and is visible, toggle, then change text, then toggle back on  
         for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)
-          if (value != text.innerText) {
+          if (value != text.innerText && text.style.opacity) {
+          text.classList.toggle('fadeIn');
           text.innerText = value;
-          text.classList.toggle('fadeIn');
-          hold.push(0);
-        } else {
-          hold.push(1);
-        }
         }       
-        await new Promise(r => setTimeout(r, duration));  
-        holdNum = 0;
         for(const [key, value] of Object.entries(message)){
-          if (!hold[holdNum]){
           text = document.getElementById(key)          
-          text.classList.toggle('fadeIn');
-        }
-        }     
+          text.classList.toggle('fadeIn');          
+        }  
+        // await new Promise(r => setTimeout(r, duration));  
+        // holdNum = 0;
+        // for(const [key, value] of Object.entries(message)){
+        //   if (!hold[holdNum]){
+        //   text = document.getElementById(key)          
+        //   text.classList.toggle('fadeIn');
+        // }
+        // }     
         // dont include a delay for the last message
         if (++count < payload.length) await new Promise(r => setTimeout(r, duration/2));  
       }
