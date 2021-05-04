@@ -82,42 +82,19 @@ async function toggleJar(payload){
       count = 0;      
       for(message of payload){
         duration = message.duration;
-        delete message.duration;     
-        
-        // if tag is visible and different than current text, fade it out and set new text
-        // fade in
+        delete message.duration;        
         for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)
-          if (text.innerText == value) continue;
-          if (text.classList.contains('fadeIn')) text.classList.toggle('fadeIn');
-
-        text.innerText = value;
+          text.innerText = value;
           text.classList.toggle('fadeIn');
-        
-        }
-        await new Promise(r => setTimeout(r, duration));      
-        //on last round fade out
-        if (count == payload.length){
-          for(const [key, value] of Object.entries(message)){
-          text = document.getElementById(key)
+        }       
+        await new Promise(r => setTimeout(r, duration));  
+
+        for(const [key, value] of Object.entries(message)){
+          text = document.getElementById(key)          
+          text.classList.toggle('fadeIn');
           
-          text.classList.toggle('fadeIn');        
-        }
-        }
-
-
-        // for(const [key, value] of Object.entries(message)){
-        //   text = document.getElementById(key)
-        //   text.innerText = value;
-        //   text.classList.toggle('fadeIn');
-        // }       
-        // await new Promise(r => setTimeout(r, duration));  
-
-        // for(const [key, value] of Object.entries(message)){
-        //   text = document.getElementById(key)          
-        //   text.classList.toggle('fadeIn');
-          
-        // }     
+        }     
         // dont include a delay for the last message
         if (++count < payload.length) await new Promise(r => setTimeout(r, duration/2));  
       }
