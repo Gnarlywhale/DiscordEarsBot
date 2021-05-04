@@ -19,34 +19,37 @@
         /* color: #65E7BB; */
         color: #FF7984;
       }
-    #jarDiv {
-      opacity: 0;
-      transition: opacity 1s;
-      width:612px;
+      #jarDiv{
+        width:612px;
       position:relative;
       text-align:center;
+      }
+    #jar {
+      opacity: 0;
+      transition: opacity 1s;
+
       /* color:black; */
     }
-    #top-text{
+    .text{
       position:absolute;
-      top: 15%;
       left: 50%;
       transform: translate(-50%,-50%);
-      
     }
+    #top-text{
+      top: 15%;
+    }
+    .fadeable{
+      opacity: 0;
+      transition: opacity 1s;
+    }
+
     #middle-text{
-      position:absolute;
       top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
     }
     #bot-text{
-      position:absolute;
       top: 85%;
-      left: 50%;
-      transform: translate(-50%,-50%);
     }
-    .fadeIn {
+    #top-text.fadeIn,#middle-text.fadeIn, #bot-text.fadeIn, #jar.fadeIn {
       opacity: 1;
       transition: opacity 1s;
     }
@@ -103,10 +106,10 @@ async function toggleJar(payload){
   <body>
     <p id="server-time"></p>
     <div id=jarDiv>
-      <img src='./jar.png' style="width:100%"/>
-      <h2 id="top-text"></h2>
-      <h1 id="middle-text"></h1>
-      <h2 id="bot-text"></h2>
+      <img src='./jar.png' id='jar' style="width:100%" class="fadeable"/>
+      <h2 id="top-text" class='fadeable text'></h2>
+      <h1 id="middle-text" class='fadeable text'></h1>
+      <h2 id="bot-text" class='fadeable text'></h2>
     </div>
   </body>
 </html
