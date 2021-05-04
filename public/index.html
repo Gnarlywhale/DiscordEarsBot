@@ -81,13 +81,12 @@ async function toggleJar(payload){
         delete message.duration;
         for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)
-          text.innerHTML = value;
+          text.innertext = value;
           text.classList.toggle('fadeIn');
         }       
         await new Promise(r => setTimeout(r, duration));  
         for(const [key, value] of Object.entries(message)){
-          text = document.getElementById(key)
-          text.innerHTML = value;
+          text = document.getElementById(key)          
           text.classList.toggle('fadeIn');
         }     
       }
