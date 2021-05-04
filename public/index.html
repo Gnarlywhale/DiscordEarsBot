@@ -63,7 +63,7 @@
       });
       socket.on('bot-connected',(payload)=> {
         console.log(payload);
-        toggleJar();
+        toggleJar(payload);
       })
       socket.on('bot-disconnected',(payload)=> {
         console.log(payload);
@@ -73,7 +73,18 @@ async function toggleJar(payload){
   // payload can be used to contain things like message 1, message 2, top string, bot string, etc
   var jarDiv = document.getElementById('jarDiv')
         jarDiv.classList.toggle('fadeIn');
-        await new Promise(r => setTimeout(r, 2000));
+        
+        payload.forEach(message => {
+          duration = message.duration;
+        delete message.duration;
+        for(const [key, value] of message.entities){
+          text = document.getElementById(key)
+          text.innerHTML = value;
+          text.classList.toggle(fadeIn);
+        }       
+        await new Promise(r => setTimeout(r, duration));  
+        });
+        
 
         jarDiv.classList.toggle('fadeIn');
 }
