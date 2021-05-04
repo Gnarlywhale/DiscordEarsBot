@@ -55,6 +55,7 @@
     }
     </style>
     <script>
+      isRendering = 0;
       let socket = io();
       let el;
       socket.on("connect", () => {
@@ -76,7 +77,15 @@
         console.log(payload);
         singleMessge(payload);
 })
+
+// Should make a render queue
+// payloads probably need types
+// for now add in at front end
 async function renderSwears(payload){
+  while(isRendering){
+    await new Promise(r => setTimeout(r, 1000));  
+  }
+  isRendering = true;
   document.getElementById('jar').classList.toggle('fadeIn');
       count = 0;      
       // Show the first message
@@ -119,6 +128,7 @@ async function renderSwears(payload){
       midtext.classList.toggle('fadeIn');
       
       document.getElementById('jar').classList.toggle('fadeIn');
+      isRendering = false;
 }
 async function singleMessage(payload){
   // payload can be used to contain things like message 1, message 2, top string, bot string, etc  
