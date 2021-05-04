@@ -70,7 +70,7 @@
       })
       socket.on('bot-disconnected',(payload)=> {
         console.log(payload);
-        toggleJar();
+        toggleJar(payload);
 })
 async function toggleJar(payload){
   // payload can be used to contain things like message 1, message 2, top string, bot string, etc  
