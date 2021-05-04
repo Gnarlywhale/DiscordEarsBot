@@ -80,32 +80,21 @@ async function toggleJar(payload){
   // payload can be used to contain things like message 1, message 2, top string, bot string, etc  
       document.getElementById('jar').classList.toggle('fadeIn');
       count = 0;      
-      
       for(message of payload){
-        
         duration = message.duration;
-        delete message.duration;      
-        // Check if the current text doesn't match and is visible, toggle, then change text, then toggle back on  
+        delete message.duration;        
         for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)
-          if (value != text.innerText && text.style.opacity) {
-          text.classList.toggle('fadeIn');
-          }
           text.innerText = value;
-        
-      }
+          text.classList.toggle('fadeIn');
+        }       
+        await new Promise(r => setTimeout(r, duration));  
+
         for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)          
-          text.classList.toggle('fadeIn');          
-        }  
-        // await new Promise(r => setTimeout(r, duration));  
-        // holdNum = 0;
-        // for(const [key, value] of Object.entries(message)){
-        //   if (!hold[holdNum]){
-        //   text = document.getElementById(key)          
-        //   text.classList.toggle('fadeIn');
-        // }
-        // }     
+          text.classList.toggle('fadeIn');
+          
+        }     
         // dont include a delay for the last message
         if (++count < payload.length) await new Promise(r => setTimeout(r, duration/2));  
       }
