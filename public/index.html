@@ -93,6 +93,7 @@ async function toggleJar(payload){
           text = document.getElementById(key)          
           text.classList.toggle('fadeIn');
         }     
+        await new Promise(r => setTimeout(r, duration));  
       }
         // payload.forEach(async (message) => {
         //   duration = message.duration;
