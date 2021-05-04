@@ -85,8 +85,10 @@ async function toggleJar(payload){
         delete message.duration;        
         for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)
+          if (value != textr.innerText) {
           text.innerText = value;
           text.classList.toggle('fadeIn');
+        }
         }       
         await new Promise(r => setTimeout(r, duration));  
 
