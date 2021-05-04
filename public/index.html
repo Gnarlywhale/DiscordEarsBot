@@ -27,9 +27,19 @@
     #jar {
       opacity: 0;
       transition: opacity .5s;
-
+      animation:animated_div 4s infinite;
+-moz-animation:animated_div 4s infinite;
+-webkit-animation:animated_div 4s infinite;
+-o-animation:animated_div 4s infinite;
       /* color:black; */
     }
+    @keyframes animated_div
+{
+0% {transform: rotate(20deg)}
+50% {transform: rotate(-20deg)}
+
+100% {transform: rotate(20deg)}
+}
     .text{
       position:absolute;
       left: 50%;
