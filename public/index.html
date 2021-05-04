@@ -89,6 +89,7 @@ async function toggleJar(payload){
           if (value != text.innerText) {
           text.innerText = value;
           text.classList.toggle('fadeIn');
+          hold.push(0);
         } else {
           hold.push(1);
         }
