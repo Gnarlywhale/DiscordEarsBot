@@ -301,7 +301,7 @@ discordClient.on('message', async (msg) => {
             intersection = new Set(["fuck","shit","bitch"]);
             user = {'username': msg.author.username};
             for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
-            swearPayload.push(messageFactory({top: 'Current Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
+            swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
         }
         else if (msg.content.split('\n')[0].split(' ')[0].trim().toLowerCase() == _CMD_LANG) {
@@ -456,7 +456,7 @@ function process_commands_query(txt, mapKey, user) {
             
             swearPayload = Array();
             for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
-            swearPayload.push(messageFactory({top: 'Current Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
+            swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
             
             val.text_Channel.send(user.username+','+Array.from(intersection))
