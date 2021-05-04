@@ -19,31 +19,36 @@ jarTotal = 0;
 userRecord = {};
 low = .25;
 high = 1;
+swearList = {}
+swearSet = new Set()
+function updateSwears()
+{
+    swearList = {
+        dipshit: low,
+        shit: low,
+        shitting: low,
+        shitty: low,
+        fucker: low,
+        motherfucker: low,
+        fuck: low,
+        fucking: low,
+        goddamn:low,
+        bitch: high,
+        balls: low,
+        cunt: high,
+        fuckers: low,
+        motherfuckers: low,
+        asshole: low,
+        assholes: low,
+        ass: low,
+        assis: low,
+        fatass: low,
+        dick: low,
+        bullshit: low
+    };
+    swearSet = new Set(Object.keys(swearList));
+}
 
-swearList = {
-    dipshit: low,
-    shit: low,
-    shitting: low,
-    shitty: low,
-    fucker: low,
-    motherfucker: low,
-    fuck: low,
-    fucking: low,
-    goddamn:low,
-    bitch: high,
-    balls: low,
-    cunt: high,
-    fuckers: low,
-    motherfuckers: low,
-    asshole: low,
-    assholes: low,
-    ass: low,
-    assis: low,
-    fatass: low,
-    dick: low,
-    bullshit: low
-};
-swearSet = new Set(Object.keys(swearList));
 // const server = express()
 //   .use(express.static(path.join(__dirname, 'public')))
 //   .set('views', path.join(__dirname, 'views'))
@@ -319,12 +324,25 @@ discordClient.on('message', async (msg) => {
               }
             })
         } else if (msg.content.trim().toLowerCase().split(' ')[0]== _CMD_SET){
-            newVal = Math.round(msg.content.split(' ')[1] * 100) / 100;
+            type = msg.content.trim().toLowerCase().split(' ')[1];
+            newVal = Math.round(msg.content.split(' ')[2] * 100) / 100;
             if (!isNaN(newVal)){
-            jarTotal = Math.round(newVal * 100) / 100
-            msg.reply('The new swear jar total is: $' + jarTotal)
+            
+            if (type == 'total'){
+                jarTotal = newVal
+                msg.reply('The new swear jar total is: $' + jarTotal.toFixed(2));
+            } else if (type == 'low') {
+                low = newVal;
+                msg.reply('The new low swear cost is: $' + newVal)
+                updateSwears();
+            } else if (type == 'high') {
+                high = newVal;
+                msg.reply('The new high swear cost is: $' + newVal)
+                updateSwears();
+            }
+            
             } else {
-                msg.reply('The message after *set must be a valid number, i.e. *set 12.25')
+                msg.reply('The message after *set must be a valid number, i.e. *set total 12.25')
             }
         } else if (msg.content.trim().toLowerCase()  == _CMD_TOTAL){
             msg.reply('The current swear jar total is: $'+jarTotal)
@@ -351,7 +369,9 @@ function getHelpString() {
         out += PREFIX + 'set\n';
         out += PREFIX + 'reset\n';
         out += PREFIX + 'leave\n';
-        out += '```'
+        out += '```';
+        out += 'Use, `jar` `low` or `high` with a number to set new jar total and swear costs (non-retroactive).\n';
+        out += 'Example `*set jar 14.25`\n'
     return out;
 }
 
