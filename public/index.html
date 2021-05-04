@@ -94,9 +94,9 @@ async function toggleJar(payload){
           toggled = true;
         }
         text.innerText = value;
-        if toggled(
+        if (toggled)
           text.classList.toggle('fadeIn');
-        )
+        
         }
         await new Promise(r => setTimeout(r, duration));      
         //on last round fade out
