@@ -74,7 +74,7 @@ async function toggleJar(payload){
   var jarDiv = document.getElementById('jarDiv')
         jarDiv.classList.toggle('fadeIn');
         
-        payload.forEach(message => {
+        payload.forEach( async (message) => {
           duration = message.duration;
         delete message.duration;
         for(const [key, value] of message.entities){
