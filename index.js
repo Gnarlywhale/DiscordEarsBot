@@ -25,25 +25,31 @@ function updateSwears()
 {
     swearList = {
         dipshit: low,
+        dipshits: low,
         shit: low,
         shitting: low,
         shitty: low,
-        fucker: low,
-        motherfucker: low,
         fuck: low,
+        fucker: low,
+        fucks: low,
         fucking: low,
+        motherfucker: low,
         goddamn:low,
         bitch: high,
+        bitches: high,
         balls: low,
         cunt: high,
         fuckers: low,
         motherfuckers: low,
+        motherfucking: low,
         asshole: low,
         assholes: low,
         ass: low,
         assis: low,
+        asses: low,
         fatass: low,
         dick: low,
+        dicks: low,
         bullshit: low
     };
     swearSet = new Set(Object.keys(swearList));
