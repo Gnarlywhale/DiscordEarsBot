@@ -26,7 +26,7 @@
       }
     #jar {
       opacity: 0;
-      transition: opacity 1s;
+      transition: opacity .5s;
 
       /* color:black; */
     }
@@ -40,7 +40,7 @@
     }
     .fadeable{
       opacity: 0;
-      transition: opacity 1s;
+      transition: opacity .5s;
     }
 
     #middle-text{
@@ -51,7 +51,7 @@
     }
     #top-text.fadeIn,#middle-text.fadeIn, #bot-text.fadeIn, #jar.fadeIn {
       opacity: 1;
-      transition: opacity 1s;
+      transition: opacity .5s;
     }
     </style>
     <script>
@@ -66,23 +66,66 @@
       // });
       socket.on('bot-connected',(payload)=> {
         console.log(payload);
-        toggleJar(payload);
+        singleMessage(payload);
       })
       socket.on('swear',(payload)=> {
         console.log(payload);
-        toggleJar(payload);
+        renderSwears(payload);
       })
       socket.on('bot-disconnected',(payload)=> {
         console.log(payload);
-        toggleJar(payload);
+        singleMessge(payload);
 })
-async function toggleJar(payload){
+async function renderSwears(payload){
+  document.getElementById('jar').classList.toggle('fadeIn');
+      count = 0;      
+      // Show the first message
+      message = payload.shift();
+      toptext = document.getElementById('top-text');
+      toptext.innerText = message['top-text']
+      toptext.classList.toggle('fadeIn');
+      midtext = document.getElementById('middle-text');
+      midtext.innerText = message['middle-text']
+      midtext.classList.toggle('fadeIn');
+            
+      await new Promise(r => setTimeout(r, message['duration']));  
+      while (payload.length > 1){
+        message = payload.shift();
+        // fade out the middle text
+        midtext.classList.toggle('fadeIn');
+        // swap text
+        midtext.innerText = message['middle-text']
+        // fade it back in 
+        midtext.classList.toggle('fadeIn');
+        //wait
+        await new Promise(r => setTimeout(r, message['duration']));
+      }
+      // fade out both
+      toptext.classList.toggle('fadeIn');
+      midtext.classList.toggle('fadeIn');
+      // set text for last message
+      message = payload.shift();
+      toptext.innerText = message['top-text']
+      midtext.innerText = message['middle-text']
+      // fade it in
+      toptext.classList.toggle('fadeIn');
+      midtext.classList.toggle('fadeIn');
+      // wait
+      await new Promise(r => setTimeout(r, message['duration']));
+      // fade em out
+      toptext.classList.toggle('fadeIn');
+      midtext.classList.toggle('fadeIn');
+      
+      document.getElementById('jar').classList.toggle('fadeIn');
+}
+async function singleMessage(payload){
   // payload can be used to contain things like message 1, message 2, top string, bot string, etc  
       document.getElementById('jar').classList.toggle('fadeIn');
       count = 0;      
       for(message of payload){
         duration = message.duration;
-        delete message.duration;        
+        delete message.duration;     
+           
         for(const [key, value] of Object.entries(message)){
           text = document.getElementById(key)
           text.innerText = value;
