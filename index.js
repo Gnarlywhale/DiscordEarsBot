@@ -279,7 +279,7 @@ discordClient.on('message', async (msg) => {
                 guildMap.delete(mapKey)
                 showJarStatus(msg)
                 msg.reply("Disconnected.")
-                io.emit('bot-disconnected',msg.author)
+                io.emit('bot-disconnected',Array(messageFactory({middle:'Swear Jar Connected'})))
             } else {
                 msg.reply("Cannot leave because not connected.")
             }

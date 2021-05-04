@@ -60,10 +60,10 @@
       socket.on("connect", () => {
   console.log(socket.connected); // true
 });
-      socket.on('time', (timeString) => {
-        el = document.getElementById('server-time');
-        el.innerHTML = timeString;
-      });
+      // socket.on('time', (timeString) => {
+      //   el = document.getElementById('server-time');
+      //   el.innerHTML = timeString;
+      // });
       socket.on('bot-connected',(payload)=> {
         console.log(payload);
         toggleJar(payload);
@@ -73,9 +73,8 @@
         toggleJar();
 })
 async function toggleJar(payload){
-  // payload can be used to contain things like message 1, message 2, top string, bot string, etc
-  var jarDiv = document.getElementById('jarDiv')
-        jarDiv.classList.toggle('fadeIn');
+  // payload can be used to contain things like message 1, message 2, top string, bot string, etc  
+      document.getElementById('jar').classList.toggle('fadeIn');
         
         payload.forEach( async (message) => {
           duration = message.duration;
@@ -86,10 +85,15 @@ async function toggleJar(payload){
           text.classList.toggle('fadeIn');
         }       
         await new Promise(r => setTimeout(r, duration));  
+        for(const [key, value] of Object.entries(message)){
+          text = document.getElementById(key)
+          text.innerHTML = value;
+          text.classList.toggle('fadeIn');
+        }     
         });
         
 
-        jarDiv.classList.toggle('fadeIn');
+      document.getElementById('jar').classList.toggle('fadeIn');
 }
 // Payload design:
 // payload{
