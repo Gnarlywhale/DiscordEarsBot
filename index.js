@@ -25,6 +25,7 @@ swearList = {
     dipshit: low,
     shit: low,
     shitting: low,
+    shitty: low,
     fucker: low,
     motherfucker: low,
     fuck: low,
@@ -40,7 +41,8 @@ swearList = {
     ass: low,
     assis: low,
     fatass: low,
-    dick: low
+    dick: low,
+    bullshit: low
 };
 swearSet = new Set(Object.keys(swearList));
 // const server = express()

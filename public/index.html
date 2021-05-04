@@ -132,6 +132,10 @@ async function renderSwears(payload){
 }
 async function singleMessage(payload){
   // payload can be used to contain things like message 1, message 2, top string, bot string, etc  
+  while(isRendering){
+    await new Promise(r => setTimeout(r, 1000));  
+  }
+  isRendering = true;
       document.getElementById('jar').classList.toggle('fadeIn');
       count = 0;      
       for(message of payload){
@@ -153,24 +157,11 @@ async function singleMessage(payload){
         // dont include a delay for the last message
         if (++count < payload.length) await new Promise(r => setTimeout(r, duration/2));  
       }
-        // payload.forEach(async (message) => {
-        //   duration = message.duration;
-        // delete message.duration;
-        // for(const [key, value] of Object.entries(message)){
-        //   text = document.getElementById(key)
-        //   text.innerHTML = value;
-        //   text.classList.toggle('fadeIn');
-        // }       
-        // await new Promise(r => setTimeout(r, duration));  
-        // for(const [key, value] of Object.entries(message)){
-        //   text = document.getElementById(key)
-        //   text.innerHTML = value;
-        //   text.classList.toggle('fadeIn');
-        // }     
-        // });
+
         
 
       document.getElementById('jar').classList.toggle('fadeIn');
+    isRendering = false;
 }
 // Payload design:
 // payload{
