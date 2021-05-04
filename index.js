@@ -54,7 +54,7 @@ function updateSwears()
     };
     swearSet = new Set(Object.keys(swearList));
 }
-
+updateSwears()
 // const server = express()
 //   .use(express.static(path.join(__dirname, 'public')))
 //   .set('views', path.join(__dirname, 'views'))
