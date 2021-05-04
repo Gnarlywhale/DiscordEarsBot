@@ -99,11 +99,12 @@ async function renderSwears(payload){
         // fade it back in 
         midtext.classList.toggle('fadeIn');
         //wait
-        await new Promise(r => setTimeout(r, message['duration']));
+        await new Promise(r => setTimeout(r, message['duration']/2));
       }
       // fade out both
       toptext.classList.toggle('fadeIn');
       midtext.classList.toggle('fadeIn');
+      await new Promise(r => setTimeout(r, message['duration']/2));
       // set text for last message
       message = payload.shift();
       toptext.innerText = message['top-text']
