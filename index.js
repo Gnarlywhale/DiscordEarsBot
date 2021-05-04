@@ -302,7 +302,7 @@ discordClient.on('message', async (msg) => {
             intersectionArray = Array.from(intersection);
             // Initialize first message with the top text, subsequent swears don't need to update the top text.
             swearPayload = Array(messageFactory({top: user.username+' said', middle: intersectionArray.shift().toUpperCase().replace(/(?<!^).(?!$)/g, '*')}));
-            for (let item of intersectionArray) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
+            for (let item of intersectionArray) swearPayload.push(messageFactory({middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             // Add summary message of total jar.
             swearPayload.push(messageFactory({top: 'Current Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
