@@ -94,7 +94,7 @@
 // for now add in at front end
 async function renderSwears(payload){
   while(isRendering){
-    await new Promise(r => setTimeout(r, 1000));  
+    await new Promise(r => setTimeout(r, 2000));  
   }
   isRendering = true;
   document.getElementById('jar').classList.toggle('fadeIn');
@@ -144,7 +144,7 @@ async function renderSwears(payload){
 async function singleMessage(payload){
   // payload can be used to contain things like message 1, message 2, top string, bot string, etc  
   while(isRendering){
-    await new Promise(r => setTimeout(r, 1000));  
+    await new Promise(r => setTimeout(r, 2000));  
   }
   isRendering = true;
       document.getElementById('jar').classList.toggle('fadeIn');
