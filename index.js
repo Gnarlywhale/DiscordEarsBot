@@ -21,7 +21,6 @@ low = .25;
 high = 1;
 
 swearList = {
-    hello: 42,
     dipshit: low,
     shit: low,
     shitting: low,
