@@ -80,8 +80,9 @@ async function toggleJar(payload){
   // payload can be used to contain things like message 1, message 2, top string, bot string, etc  
       document.getElementById('jar').classList.toggle('fadeIn');
       count = 0;      
-      hold = [];
+      
       for(message of payload){
+        hold = [];
         duration = message.duration;
         delete message.duration;        
         for(const [key, value] of Object.entries(message)){
