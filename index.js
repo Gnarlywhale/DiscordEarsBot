@@ -448,8 +448,8 @@ function process_commands_query(txt, mapKey, user) {
 
             Array(messageFactory({top: user.username+' said', middle:''}))
             swearPayload = Array();
-            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle:item}))
-            swearPayload.push(messageFactory({top: 'Current Total:', middle: jarTotal.toFixed(2),duration:4000}))
+            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '⭐')}))
+            swearPayload.push(messageFactory({top: 'Current Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
             
             val.text_Channel.send(user.username+','+Array.from(intersection))
