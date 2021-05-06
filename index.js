@@ -469,28 +469,39 @@ function process_commands_query(txt, mapKey, user) {
         // val.text_Channel.send(user.username + ': ' + txt)
         // Uncomment to send the captured text to the alert client
         // io.emit('time', user.username + ': ' + txt)
+        const Guild = client.guilds.cache.get(val); // Getting the guild.
+        const Member = Guild.members.cache.get(user.id);
+        displayname = member.displayName ? member.displayName : user.username;
         intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
         if (intersection.size > 0){
             swearSum = 0;
             intersection.forEach( (x) => swearSum += swearList[x])
             jarTotal += swearSum
-            if (user.username in userRecord){
+            // if (user.username in userRecord){
                 
-                userRecord[user.username]['swearCount'] += intersection.size;
-                userRecord[user.username]['swearCost'] += swearSum;
+            //     userRecord[user.username]['swearCount'] += intersection.size;
+            //     userRecord[user.username]['swearCost'] += swearSum;
+            // } else {                
+            //     userRecord[user.username] = {};
+            //     userRecord[user.username]['swearCount'] = intersection.size;
+            //     userRecord[user.username]['swearCost'] = swearSum;
+            // }
+            if (displayname in userRecord){
+                
+                userRecord[displayname]['swearCount'] += intersection.size;
+                userRecord[displayname]['swearCost'] += swearSum;
             } else {                
-                userRecord[user.username] = {};
-                userRecord[user.username]['swearCount'] = intersection.size;
-                userRecord[user.username]['swearCost'] = swearSum;
+                userRecord[displayname] = {};
+                userRecord[displayname]['swearCount'] = intersection.size;
+                userRecord[displayname]['swearCost'] = swearSum;
             }
-
             
             swearPayload = Array();
-            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
+            for (let item of intersection.values()) swearPayload.push(messageFactory({top: displayname+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
             
-            val.text_Channel.send(user.username+','+Array.from(intersection))
+            val.text_Channel.send(displayname+','+Array.from(intersection))
         }
     }
 }
