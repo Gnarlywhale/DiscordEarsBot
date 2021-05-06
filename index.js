@@ -273,7 +273,6 @@ return message
 
 discordClient.on('message', async (msg) => {
     try {
-        console.log('message recieved')
         if (!('guild' in msg) || !msg.guild) return; // prevent private messages to bot
         const mapKey = msg.guild.id;
         if (msg.content.trim().toLowerCase() == _CMD_JOIN) {
@@ -314,7 +313,7 @@ discordClient.on('message', async (msg) => {
             msg.reply('Sending Test Payload')
             swearPayload = Array();
             intersection = new Set(["fuck","shit","bitch"]);
-            user = {'username': msg.member.displayName};
+            user = {'username': msg.author.username};
             for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
@@ -394,7 +393,6 @@ class Silence extends Readable {
   }
 }
 
-
 async function connect(msg, mapKey) {
     try {
         let voice_Channel = await discordClient.channels.fetch(msg.member.voice.channelID);
@@ -425,16 +423,8 @@ async function connect(msg, mapKey) {
 
 function speak_impl(voice_Connection, mapKey) {
     voice_Connection.on('speaking', async (user, speaking) => {
-        if (speaking.bitfield == 0 || user.bot) {            
+        if (speaking.bitfield == 0 || user.bot) {
             return
-        }
-        user.displayName = user.username;
-        members = voice_Connection.members;
-        for (i = 0; i< Object.keys(members).length; i++){
-            if (members[i].id == user.id) {
-                user.displayName = members[i].nickname ? members[i].nickname : user.username
-                break;
-            }
         }
         console.log(`I'm listening to ${user.username}`)
         // this creates a 16-bit signed PCM, stereo 48KHz stream
@@ -477,37 +467,28 @@ function process_commands_query(txt, mapKey, user) {
         // val.text_Channel.send(user.username + ': ' + txt)
         // Uncomment to send the captured text to the alert client
         // io.emit('time', user.username + ': ' + txt)
-
         intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
         if (intersection.size > 0){
             swearSum = 0;
             intersection.forEach( (x) => swearSum += swearList[x])
             jarTotal += swearSum
-            // if (user.username in userRecord){
+            if (user.username in userRecord){
                 
-            //     userRecord[user.username]['swearCount'] += intersection.size;
-            //     userRecord[user.username]['swearCost'] += swearSum;
-            // } else {                
-            //     userRecord[user.username] = {};
-            //     userRecord[user.username]['swearCount'] = intersection.size;
-            //     userRecord[user.username]['swearCost'] = swearSum;
-            // }
-            if (user.DisplayName in userRecord){
-                
-                userRecord[user.DisplayName]['swearCount'] += intersection.size;
-                userRecord[user.DisplayName]['swearCost'] += swearSum;
+                userRecord[user.username]['swearCount'] += intersection.size;
+                userRecord[user.username]['swearCost'] += swearSum;
             } else {                
-                userRecord[user.DisplayName] = {};
-                userRecord[user.DisplayName]['swearCount'] = intersection.size;
-                userRecord[user.DisplayName]['swearCost'] = swearSum;
+                userRecord[user.username] = {};
+                userRecord[user.username]['swearCount'] = intersection.size;
+                userRecord[user.username]['swearCost'] = swearSum;
             }
+
             
             swearPayload = Array();
-            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.DisplayName+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
+            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
             
-            val.text_Channel.send(displayname+','+Array.from(intersection))
+            val.text_Channel.send(user.username+','+Array.from(intersection))
         }
     }
 }
