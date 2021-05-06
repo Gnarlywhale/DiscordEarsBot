@@ -469,7 +469,7 @@ function process_commands_query(txt, mapKey, user) {
         // val.text_Channel.send(user.username + ': ' + txt)
         // Uncomment to send the captured text to the alert client
         // io.emit('time', user.username + ': ' + txt)
-        const Guild = client.guilds.cache.get(val); // Getting the guild.
+        const Guild = discordClient.guilds.cache.get(val); // Getting the guild.
         const Member = Guild.members.cache.get(user.id);
         displayname = member.displayName ? member.displayName : user.username;
         intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
