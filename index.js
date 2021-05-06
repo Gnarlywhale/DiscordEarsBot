@@ -430,7 +430,7 @@ function speak_impl(voice_Connection, mapKey) {
         }
         user.displayName = user.username;
         members = voice_Connection.members;
-        for (i = 0; i< members.length; i++){
+        for (i = 0; i< Object.keys(members).length; i++){
             if (members[i].id == user.id) {
                 user.displayName = members[i].nickname ? members[i].nickname : user.username
                 break;
