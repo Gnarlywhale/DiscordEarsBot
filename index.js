@@ -314,8 +314,8 @@ discordClient.on('message', async (msg) => {
             msg.reply('Sending Test Payload')
             swearPayload = Array();
             intersection = new Set(["fuck","shit","bitch"]);
-            user = {'username': msg.author.username};
-            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
+            user = {'username': msg.member.displayName};
+            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
         }
@@ -394,6 +394,7 @@ class Silence extends Readable {
   }
 }
 
+
 async function connect(msg, mapKey) {
     try {
         let voice_Channel = await discordClient.channels.fetch(msg.member.voice.channelID);
@@ -424,7 +425,7 @@ async function connect(msg, mapKey) {
 
 function speak_impl(voice_Connection, mapKey) {
     voice_Connection.on('speaking', async (user, speaking) => {
-        if (speaking.bitfield == 0 || user.bot) {
+        if (speaking.bitfield == 0 || user.bot) {            
             return
         }
         console.log(`I'm listening to ${user.username}`)
