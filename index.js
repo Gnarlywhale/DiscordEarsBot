@@ -428,6 +428,14 @@ function speak_impl(voice_Connection, mapKey) {
         if (speaking.bitfield == 0 || user.bot) {            
             return
         }
+        user.displayName = user.username;
+        members = voice_Connection.members;
+        for (i = 0; i< members.length; i++){
+            if (members[i].id == user.id) {
+                user.displayName = members[i].nickname ? members[i].nickname : user.username
+                break;
+            }
+        }
         console.log(`I'm listening to ${user.username}`)
         // this creates a 16-bit signed PCM, stereo 48KHz stream
         const audioStream = voice_Connection.receiver.createStream(user, { mode: 'pcm' })
@@ -469,9 +477,7 @@ function process_commands_query(txt, mapKey, user) {
         // val.text_Channel.send(user.username + ': ' + txt)
         // Uncomment to send the captured text to the alert client
         // io.emit('time', user.username + ': ' + txt)
-        const Guild = discordClient.guilds.cache.get(val); // Getting the guild.
-        const Member = Guild.members.cache.get(user.id);
-        displayname = member.displayName ? member.displayName : user.username;
+
         intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
         if (intersection.size > 0){
             swearSum = 0;
@@ -486,18 +492,18 @@ function process_commands_query(txt, mapKey, user) {
             //     userRecord[user.username]['swearCount'] = intersection.size;
             //     userRecord[user.username]['swearCost'] = swearSum;
             // }
-            if (displayname in userRecord){
+            if (user.DisplayName in userRecord){
                 
-                userRecord[displayname]['swearCount'] += intersection.size;
-                userRecord[displayname]['swearCost'] += swearSum;
+                userRecord[user.DisplayName]['swearCount'] += intersection.size;
+                userRecord[user.DisplayName]['swearCost'] += swearSum;
             } else {                
-                userRecord[displayname] = {};
-                userRecord[displayname]['swearCount'] = intersection.size;
-                userRecord[displayname]['swearCost'] = swearSum;
+                userRecord[user.DisplayName] = {};
+                userRecord[user.DisplayName]['swearCount'] = intersection.size;
+                userRecord[user.DisplayName]['swearCost'] = swearSum;
             }
             
             swearPayload = Array();
-            for (let item of intersection.values()) swearPayload.push(messageFactory({top: displayname+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
+            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.DisplayName+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
             
