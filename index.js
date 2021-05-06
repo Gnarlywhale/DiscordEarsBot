@@ -34,23 +34,26 @@ function updateSwears()
         fucks: low,
         fucking: low,
         motherfucker: low,
+        motherfuckers: low,
+        motherfucking: low,
         goddamn:low,
         bitch: high,
         bitches: high,
         balls: low,
         cunt: high,
+        cunts: high,
         fuckers: low,
-        motherfuckers: low,
-        motherfucking: low,
         asshole: low,
         assholes: low,
         ass: low,
         assis: low,
         asses: low,
         fatass: low,
+        fatasses: low,
         dick: low,
         dicks: low,
-        bullshit: low
+        bullshit: low,
+        hell: low
     };
     swearSet = new Set(Object.keys(swearList));
 }
