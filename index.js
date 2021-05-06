@@ -273,6 +273,7 @@ return message
 
 discordClient.on('message', async (msg) => {
     try {
+        console.log('message recieved')
         if (!('guild' in msg) || !msg.guild) return; // prevent private messages to bot
         const mapKey = msg.guild.id;
         if (msg.content.trim().toLowerCase() == _CMD_JOIN) {
