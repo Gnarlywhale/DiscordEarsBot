@@ -484,6 +484,9 @@ function process_commands_query(txt, mapKey, user) {
 
             
             swearPayload = Array();
+            if (user.username.toLowerCase() == 'benindetto') user.username = 'Andrew';
+            if (user.username.toLowerCase() == 'emmaeira') user.username = 'Emma';
+            if (user.username.toLowerCase() == 'gnarlywhale') user.username = 'Riley';
             for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
