@@ -315,7 +315,7 @@ discordClient.on('message', async (msg) => {
             swearPayload = Array();
             intersection = new Set(["fuck","shit","bitch"]);
             user = {'username': msg.member.displayName};
-            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
+            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
         }
