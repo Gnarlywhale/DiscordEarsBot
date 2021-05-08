@@ -425,7 +425,7 @@ async function getSwearList(msg){
     rows = await query('SELECT table_schema,table_name FROM information_schema.tables;');
     
     response = 'Swear List:\n'
-    for (let row of res.rows) {
+    for (let row of rows.rows) {
         response += JSON.stringify(row) + "\n";        
     }
     msg.reply(response);
