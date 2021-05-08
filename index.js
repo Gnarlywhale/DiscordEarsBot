@@ -422,7 +422,7 @@ function query (text, params){
     db.query(text,params)
 }
 async function getSwearList(msg){
-    rows = await query('SELECT table_schema,table_name FROM information_schema.tables;');
+    rows = await query('SELECT * FROM swear_list;');
     
     response = 'Swear List:\n'
     for (let row of rows.rows) {
