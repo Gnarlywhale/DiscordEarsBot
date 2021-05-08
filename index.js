@@ -418,21 +418,32 @@ discordClient.on('message', async (msg) => {
         msg.reply('Error#180: Something went wrong, try again or contact the developers if this keeps happening.');
     }
 })
-
+function query (text, params){
+    db.query(text,params)
+}
 async function getSwearList(msg){
-    await db.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-        if (err){
-            response = 'Error';
-        } else {
-        resp = 'Swear List:\n'
-        for (let row of res.rows) {
-          resp += JSON.stringify(row) + "\n";
-          
-        }
+    rows = await query('SELECT table_schema,table_name FROM information_schema.tables;');
+    
+    response = 'Swear List:\n'
+    for (let row of res.rows) {
+        response += JSON.stringify(row) + "\n";        
     }
-        //client.end();
-      });
-    msg.reply(resp);
+    msg.reply(response);
+//     const response = {
+//         then: db.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+//             if (err){
+//                 response = 'Error';
+//             } else {
+//                 response = 'Swear List:\n'
+//             for (let row of res.rows) {
+//                 response += JSON.stringify(row) + "\n";
+              
+//             }
+//     }
+// resolve(response);
+// }
+//     }
+//     msg.reply(resp);
 }
 
 function getHelpString() {
