@@ -425,7 +425,7 @@ async function getSwearList(msg){
     rows = await query('SELECT * FROM swear_list;');
     
     response = 'Swear List:\n'
-    for (let row of rows.rows) {
+    for (let row of rows) {
         response += JSON.stringify(row) + "\n";        
     }
     msg.reply(response);
