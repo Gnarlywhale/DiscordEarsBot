@@ -1,13 +1,37 @@
 // Static page
 
+// TODO add command to discord interface that prints status to heroku log
+// Currently the bot will seemingly stop listening without crashing - could be an api limit but I doubt it
+// ^ It actually looks like this could just be a heroku log limit reached or something, I commanded the bot to leave and come back
+// without reseting and it worked okay
+
+// so far it has only actually crashed twice
+// Increasingly thinking this may be log related
+
+// Should probably post the jar total everytime a swear is detected in the discord chat
+
+// New plan, on discord bot startup, check if people are in the playthrucrew voice channel
+// If so, hop in, if not, sleep for 10-15 min or so  <- covers crashing (should hop in without posting alert)
+
+// Either setup persistent storage OR
+// post status messages every swear, with totals
+// on load into the voice channel, grab totals from last discord message that was sent by the swear jar, use the text channel itself as a log
+// Also provide a way to trigger the on-screen status for 
+
+// Persistent storage: 
+// there's a free postgres add-on that should be fine to use
+// can store persistent swear lists on the storage as well
+
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 const INDEX = 'public/index.html';
 const socketIO = require('socket.io');
-
-
+const PGClient = require('pg');
 const server = express()
+
+
+
 //   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
@@ -24,6 +48,8 @@ swearSet = new Set()
 function updateSwears()
 {
     swearList = {
+        bastard: low,
+        bastards: low,
         dipshit: low,
         dipshits: low,
         shit: low,
@@ -31,6 +57,7 @@ function updateSwears()
         shitty: low,
         fuck: low,
         fucker: low,
+        fucked: low,
         fucks: low,
         fucking: low,
         motherfucker: low,
@@ -39,7 +66,6 @@ function updateSwears()
         goddamn:low,
         bitch: high,
         bitches: high,
-        balls: low,
         cunt: high,
         cunts: high,
         fuckers: low,
@@ -50,10 +76,7 @@ function updateSwears()
         asses: low,
         fatass: low,
         fatasses: low,
-        dick: low,
-        dicks: low,
-        bullshit: low,
-        hell: low
+        bullshit: low
     };
     swearSet = new Set(Object.keys(swearList));
 }
@@ -145,15 +168,26 @@ function loadConfig() {
         const CFG_DATA = JSON.parse( fs.readFileSync(SETTINGS_FILE, 'utf8') );
         DISCORD_TOK = CFG_DATA.discord_token;
         WITAPIKEY = CFG_DATA.wit_ai_token;
+        DATABASE_URL = CFG_DATA.postgresURI;
     } else {
         DISCORD_TOK = process.env.DISCORD_TOK;
         WITAPIKEY = process.env.WITAPIKEY;
+        DATABASE_URL = process.env.DATABASE_URL;
     }
     if (!DISCORD_TOK || !WITAPIKEY)
         throw 'failed loading config #113 missing keys!'
     
 }
 loadConfig()
+
+// Connect db
+const db = new PGClient({
+    connectionString: DATABASE_URL,
+    ssl: {
+        rejectUnauthorized:false
+    }
+})
+db.connect();
 
 const https = require('https')
 function listWitAIApps(cb) {
@@ -252,6 +286,7 @@ const _CMD_SET         = PREFIX + 'set';
 const _CMD_TOTAL       = PREFIX + 'total';
 const _CMD_STATUS      = PREFIX + 'status';
 const _CMD_RESET      = PREFIX + 'reset';
+const _CMD_GET       = PREFIX + 'get';
 
 const guildMap = new Map();
 
@@ -353,7 +388,34 @@ discordClient.on('message', async (msg) => {
             } else {
                 msg.reply('The message after *set must be a valid number, i.e. *set total 12.25')
             }
-        } else if (msg.content.trim().toLowerCase()  == _CMD_TOTAL){
+        } else if (msg.content.trim().toLowerCase().split(' ')[0]== _CMD_GET){
+            type = msg.content.trim().toLowerCase().split(' ')[1];
+            
+            
+            if (type == 'swears'){
+                client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+                    if (err){
+                        response = 'Error';
+                    } else {
+                    resp = 'Swear List:\n'
+                    for (let row of res.rows) {
+                      resp += JSON.stringify(row) + "\n";
+                      
+                    }
+                }
+                    //client.end();
+                  });
+                msg.reply(resp);
+            } else if (type == 'low') {
+                low = newVal;
+                msg.reply('The new low swear cost is: $' + newVal)
+                updateSwears();
+            } else if (type == 'high') {
+                high = newVal;
+                msg.reply('The new high swear cost is: $' + newVal)
+                updateSwears();
+            }
+        }else if (msg.content.trim().toLowerCase()  == _CMD_TOTAL){
             msg.reply('The current swear jar total is: $'+jarTotal)
         } else if (msg.content.trim().toLowerCase()  == _CMD_STATUS){
             showJarStatus(msg)
