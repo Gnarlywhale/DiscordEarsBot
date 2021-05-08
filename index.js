@@ -459,10 +459,10 @@ class Silence extends Readable {
 
 function addServer(discordID,voiceID){
     var q = "INSERT INTO swear_jar (guild_id, vc_id) VALUES \
-    ('"+discordID+"', '"+voiceID+"');"
+    ('"+discordID+"', '"+voiceID+"') ON CONFLICT DO NOTHING/UPDATE;"
 
     db.query(q).then( res => {
-        console.log(res.rows[0])
+        console.log('Logged guild.')
         
     }).catch(e => console.error(e.stack))
 }
