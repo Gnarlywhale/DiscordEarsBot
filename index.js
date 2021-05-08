@@ -393,7 +393,7 @@ discordClient.on('message', async (msg) => {
             
             
             if (type == 'swears'){
-                client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+                db.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
                     if (err){
                         response = 'Error';
                     } else {
