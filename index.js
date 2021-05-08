@@ -27,7 +27,7 @@ const path = require('path')
 const PORT = process.env.PORT || 5000
 const INDEX = 'public/index.html';
 const socketIO = require('socket.io');
-const PGClient = require('pg');
+const Client = require('pg');
 const server = express()
 
 
@@ -181,7 +181,7 @@ function loadConfig() {
 loadConfig()
 
 // Connect db
-const db = new PGClient({
+const db = new Client({
     connectionString: DATABASE_URL,
     ssl: {
         rejectUnauthorized:false
