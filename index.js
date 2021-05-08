@@ -27,7 +27,7 @@ const path = require('path')
 const PORT = process.env.PORT || 5000
 const INDEX = 'public/index.html';
 const socketIO = require('socket.io');
-const Client = require('pg');
+const { Client } = require('pg');
 const server = express()
 
 
