@@ -423,6 +423,7 @@ function query (text, params){
 }
 async function getSwearList(msg){
     db.query('SELECT * FROM swear_list;').then( res => {
+        console.log(res)
         response = 'Swear List:\n'
         for (let row of res) {
             response += JSON.stringify(row) + "\n";        
