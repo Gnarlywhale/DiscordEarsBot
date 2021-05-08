@@ -457,6 +457,15 @@ class Silence extends Readable {
   }
 }
 
+function addServer(discordID,voiceID){
+    var q = "INSERT INTO swear_jar (guild_id, vc_id) VALUES \
+    ('"+discordID+"', '"+voiceID+"');"
+
+    db.query(q).then( res => {
+        console.log(res.rows[0])
+        
+    }).catch(e => console.error(e.stack))
+}
 async function connect(msg, mapKey) {
     try {
         let voice_Channel = await discordClient.channels.fetch(msg.member.voice.channelID);
@@ -471,6 +480,11 @@ async function connect(msg, mapKey) {
             'voice_Connection': voice_Connection,
             'debug': false,
         });
+        // Add current guid id (mapKey) and voice channel id (msg.member.voice.channelID)
+        addServer(mapKey,msg.member.voice.channelID)
+        // to swear_jar if they don't currently exist
+        // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
+        // ^ add to swear_log if not present
         speak_impl(voice_Connection, mapKey)
         voice_Connection.on('disconnect', async(e) => {
             if (e) console.log(e);
