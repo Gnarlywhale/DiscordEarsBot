@@ -423,35 +423,14 @@ function query (text, params){
 }
 async function getSwearList(msg){
     db.query('SELECT * FROM swear_list;').then( res => {
-        console.log(res)
-        response = 'Swear List:\n'
-        for (let row of res) {
+        response = 'Swear List:\n';
+        for (let row of res.rows) {
             response += JSON.stringify(row) + "\n";        
         }
         msg.reply(response);
-    })
+    }).catch(e => console.error(e.stack))
     
-    // response = 'Swear List:\n'
-    // console.log(rows)
-    // for (let row of rows) {
-    //     response += JSON.stringify(row) + "\n";        
-    // }
-    // msg.reply(response);
-//     const response = {
-//         then: db.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-//             if (err){
-//                 response = 'Error';
-//             } else {
-//                 response = 'Swear List:\n'
-//             for (let row of res.rows) {
-//                 response += JSON.stringify(row) + "\n";
-              
-//             }
-//     }
-// resolve(response);
-// }
-//     }
-//     msg.reply(resp);
+   
 }
 
 function getHelpString() {
