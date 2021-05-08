@@ -393,19 +393,7 @@ discordClient.on('message', async (msg) => {
             
             
             if (type == 'swears'){
-                await db.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-                    if (err){
-                        response = 'Error';
-                    } else {
-                    resp = 'Swear List:\n'
-                    for (let row of res.rows) {
-                      resp += JSON.stringify(row) + "\n";
-                      
-                    }
-                }
-                    //client.end();
-                  });
-                msg.reply(resp);
+                getSwearList(msg);
             } else if (type == 'low') {
                 low = newVal;
                 msg.reply('The new low swear cost is: $' + newVal)
@@ -430,6 +418,22 @@ discordClient.on('message', async (msg) => {
         msg.reply('Error#180: Something went wrong, try again or contact the developers if this keeps happening.');
     }
 })
+
+async function getSwearList(msg){
+    await db.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+        if (err){
+            response = 'Error';
+        } else {
+        resp = 'Swear List:\n'
+        for (let row of res.rows) {
+          resp += JSON.stringify(row) + "\n";
+          
+        }
+    }
+        //client.end();
+      });
+    msg.reply(resp);
+}
 
 function getHelpString() {
     let out = '**COMMANDS:**\n'
