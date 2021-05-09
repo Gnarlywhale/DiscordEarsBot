@@ -466,6 +466,26 @@ function addServer(discordID,voiceID){
         
     }).catch(e => console.error(e.stack))
 }
+function initMember(member,guildID,voiceID){
+    if (!member.user.bot){
+        // Add member to local user record
+        if (member.nickame.length > 0){
+    
+    var q = "INSERT INTO swear_log (id, guild_id, vc_id,nickname) VALUES \
+    ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.nickname +"') ON CONFLICT DO NOTHING;"
+    }else{
+        var q = "INSERT INTO swear_log (id, guild_id, vc_id) VALUES \
+        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
+    }
+    
+        db.query(q).then(res => {
+            db.query("SELECT alias, swear_count, total_cost FROM swear_list WHERE \
+            vc_id = '"+ 123123123+"' AND guild_id = '"+guildid+"' AND username = '"+member.user+"'; \
+        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
+        )})
+        userRecord[user.username] = {};
+    }
+}
 async function connect(msg, mapKey) {
     try {
         let voice_Channel = await discordClient.channels.fetch(msg.member.voice.channelID);
@@ -477,6 +497,7 @@ async function connect(msg, mapKey) {
         guildMap.set(mapKey, {
             'text_Channel': text_Channel,
             'voice_Channel': voice_Channel,
+            'voice_Channel_ID':msg.member.voice.channelID,
             'voice_Connection': voice_Connection,
             'debug': false,
         });
@@ -485,8 +506,8 @@ async function connect(msg, mapKey) {
         addServer(mapKey,msg.member.voice.channelID)
         // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
         members = voice_Channel.members;
-        console.log(members);
-        members.forEach(member => console.log(member));
+        // console.log(members);
+        members.forEach(member => initMember(member));
         // ^ add to swear_log if not present
         speak_impl(voice_Connection, mapKey)
         voice_Connection.on('disconnect', async(e) => {
@@ -558,9 +579,10 @@ function process_commands_query(txt, mapKey, user) {
                 userRecord[user.username]['swearCount'] += intersection.size;
                 userRecord[user.username]['swearCost'] += swearSum;
             } else {                
-                userRecord[user.username] = {};
+                
                 userRecord[user.username]['swearCount'] = intersection.size;
                 userRecord[user.username]['swearCost'] = swearSum;
+                initMember(mapKey,guildMap.mapKey.voice_Channel_ID)
             }
 
             
