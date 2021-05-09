@@ -467,7 +467,7 @@ function addServer(discordID,voiceID){
     }).catch(e => console.error(e.stack))
 }
 function initMember(member,guildID,voiceID){
-    Console.log(member.user)
+    console.log(member.user)
     console.log('trying')
     if (!member.user.bot){
         // Add member to local user record
