@@ -481,7 +481,7 @@ function initMember(member,guildID,voiceID){
     }
     
         db.query(q).then(res => {
-            db.query("SELECT alias, swear_count, total_cost FROM swear_list WHERE \
+            db.query("SELECT alias, swear_count, total_cost FROM swear_log WHERE \
             vc_id = '"+ voiceID+"' AND guild_id = '"+guildID+"' AND username = '"+member.user.username+"';"
         ).then(res => console.log(res))
     })
