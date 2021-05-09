@@ -469,20 +469,22 @@ function addServer(discordID,voiceID){
 function initMember(member,guildID,voiceID){
     if (!member.user.bot){
         // Add member to local user record
-        if (member.nickame.length > 0){
-    
-    var q = "INSERT INTO swear_log (id, guild_id, vc_id,nickname) VALUES \
-    ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.nickname +"') ON CONFLICT DO NOTHING;"
-    }else{
-        var q = "INSERT INTO swear_log (id, guild_id, vc_id) VALUES \
+        if (member.nickame === undefined){
+            var q = "INSERT INTO swear_log (id, guild_id, vc_id) VALUES \
         ('"+member.user.id+"','"+guildID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
+
+    }else{
+        var q = "INSERT INTO swear_log (id, guild_id, vc_id,nickname) VALUES \
+        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.nickname +"') ON CONFLICT DO NOTHING;"
     }
     
         db.query(q).then(res => {
             db.query("SELECT alias, swear_count, total_cost FROM swear_list WHERE \
             vc_id = '"+ 123123123+"' AND guild_id = '"+guildid+"' AND username = '"+member.user+"'; \
         ('"+member.user.id+"','"+guildID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
-        )})
+        ).then(res => console.log(res))
+    })
+        //Todo add more details.
         userRecord[user.username] = {};
     }
 }
