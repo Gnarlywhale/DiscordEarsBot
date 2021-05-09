@@ -483,7 +483,7 @@ function initMember(member,guildID,voiceID){
     
         db.query(q).then(res => {
             db.query("SELECT alias, swear_count, total_cost FROM swear_list WHERE \
-            vc_id = '"+ 123123123+"' AND guild_id = '"+guildid+"' AND username = '"+member.user+"'; \
+            vc_id = '"+ 123123123+"' AND guild_id = '"+guildid+"' AND username = '"+member.user.username+"'; \
         ('"+member.user.id+"','"+guildID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
         ).then(res => console.log(res))
     })
