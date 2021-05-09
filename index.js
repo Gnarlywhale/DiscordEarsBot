@@ -484,7 +484,7 @@ async function connect(msg, mapKey) {
         // to swear_jar if they don't currently exist
         addServer(mapKey,msg.member.voice.channelID)
         // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
-        members = msg.member.voice.members;
+        members = voice_Channel.members;
         console.log(members);
         members.forEach(member => console.log(member));
         // ^ add to swear_log if not present
