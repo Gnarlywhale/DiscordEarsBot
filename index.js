@@ -488,7 +488,7 @@ function initMember(member,guildID,voiceID){
         ).then(res => console.log(res))
     })
         //Todo add more details.
-        userRecord[user.username] = {};
+        userRecord[member.user.username] = {};
     }
 }
 async function connect(msg, mapKey) {
