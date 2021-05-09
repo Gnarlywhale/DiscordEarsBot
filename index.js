@@ -469,7 +469,7 @@ function addServer(discordID,voiceID){
 function initMember(member,guildID,voiceID){
     console.log(member)
     console.log('trying')
-    console.log(member.get('user'));
+    console.log(member.user);
     if (!member.user.bot){
         // Add member to local user record
         if (member.nickame === undefined){
