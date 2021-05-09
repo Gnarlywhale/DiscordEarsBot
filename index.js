@@ -479,7 +479,8 @@ function initMember(member,guildID,voiceID){
         var q = "INSERT INTO swear_log (id, guild_id, vc_id,alias, username) VALUES \
         ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.user.nickname +"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
     }
-    
+    console.log('query:')
+    console.log(q);
         db.query(q).then(res => {
             db.query("SELECT alias, swear_count, total_cost FROM swear_log WHERE \
             vc_id = '"+ voiceID+"' AND guild_id = '"+guildID+"' AND username = '"+member.user.username+"';"
