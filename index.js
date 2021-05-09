@@ -467,9 +467,9 @@ function addServer(discordID,voiceID){
     }).catch(e => console.error(e.stack))
 }
 function initMember(member,guildID,voiceID){
-    console.log(member)
+    
     console.log('trying')
-    console.log(member.user);
+    console
     if (!member.user.bot){
         // Add member to local user record
         if (member.nickame === undefined){
@@ -483,8 +483,7 @@ function initMember(member,guildID,voiceID){
     
         db.query(q).then(res => {
             db.query("SELECT alias, swear_count, total_cost FROM swear_list WHERE \
-            vc_id = '"+ 123123123+"' AND guild_id = '"+guildid+"' AND username = '"+member.user.username+"'; \
-        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
+            vc_id = '"+ 123123123+"' AND guild_id = '"+guildID+"' AND username = '"+member.user.username+"';"
         ).then(res => console.log(res))
     })
         //Todo add more details.
