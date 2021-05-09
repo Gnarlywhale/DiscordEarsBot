@@ -467,9 +467,11 @@ function addServer(discordID,voiceID){
     }).catch(e => console.error(e.stack))
 }
 function initMember(member,guildID,voiceID){
-    console.log(member.user)
-    console.log('trying')
+
     if (!member.user.bot){
+
+
+
         // Add member to local user record
         if (member.nickname === undefined){
             var q = "INSERT INTO swear_log (id, guild_id, vc_id, username) VALUES \
@@ -481,14 +483,22 @@ function initMember(member,guildID,voiceID){
     }
     console.log('query:')
     console.log(q);
-        db.query(q).then(res => {
-            db.query("SELECT alias, swear_count, total_cost FROM swear_log WHERE \
+    db.query(q).then(res => {
+            db.query("SELECT * FROM swear_log WHERE \
             vc_id = '"+ voiceID+"' AND guild_id = '"+guildID+"' AND username = '"+member.user.username+"';"
-        ).then(res => console.log(res.rows[0]))
+        ).then(res => {
+            userRecord[member.user.username] = {};
+            userRecord[member.user.username].alias = res.alias;
+            userRecord[member.user.username].swear_count = res.swear_count;
+            userRecord[member.user.username].swear_cost = res.swear_cost;
+            
+            console.log(res.rows[0])
+            })
     })
-        //Todo add more details.
-        userRecord[member.user.username] = {};
-    }
+
+}
+
+   
 }
 async function connect(msg, mapKey) {
     try {
@@ -556,6 +566,7 @@ function speak_impl(voice_Connection, mapKey) {
                 let new_buffer = await convert_audio(buffer)
                 let out = await transcribe(new_buffer);
                 if (out != null)
+                    console.log(voice_Connection);
                     process_commands_query(out, mapKey, user);
             } catch (e) {
                 console.log('tmpraw rename: ' + e)
@@ -583,7 +594,7 @@ function process_commands_query(txt, mapKey, user) {
                 userRecord[user.username]['swearCount'] += intersection.size;
                 userRecord[user.username]['swearCost'] += swearSum;
             } else {                
-                
+                await resp = initMember({user})
                 userRecord[user.username]['swearCount'] = intersection.size;
                 userRecord[user.username]['swearCost'] = swearSum;
                 //initMember(mapKey,guildMap.mapKey.voice_Channel_ID)
