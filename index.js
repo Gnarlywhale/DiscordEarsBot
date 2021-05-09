@@ -477,7 +477,7 @@ function initMember(member,guildID,voiceID){
 
     }else{
         var q = "INSERT INTO swear_log (id, guild_id, vc_id,alias, username) VALUES \
-        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.nickname +"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
+        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.user.nickname +"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
     }
     
         db.query(q).then(res => {
