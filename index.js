@@ -476,14 +476,14 @@ function initMember(member,guildID,voiceID){
         ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
 
     }else{
-        var q = "INSERT INTO swear_log (id, guild_id, vc_id,nickname, username) VALUES \
+        var q = "INSERT INTO swear_log (id, guild_id, vc_id,alias, username) VALUES \
         ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.nickname +"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
     }
     
         db.query(q).then(res => {
             db.query("SELECT alias, swear_count, total_cost FROM swear_log WHERE \
             vc_id = '"+ voiceID+"' AND guild_id = '"+guildID+"' AND username = '"+member.user.username+"';"
-        ).then(res => console.log(res))
+        ).then(res => console.log(res.rows[0]))
     })
         //Todo add more details.
         userRecord[member.user.username] = {};
