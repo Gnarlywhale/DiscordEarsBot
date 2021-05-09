@@ -473,12 +473,12 @@ function initMember(member,guildID,voiceID){
     if (!member.user.bot){
         // Add member to local user record
         if (member.nickame === undefined){
-            var q = "INSERT INTO swear_log (id, guild_id, vc_id) VALUES \
-        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
+            var q = "INSERT INTO swear_log (id, guild_id, vc_id, username) VALUES \
+        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
 
     }else{
-        var q = "INSERT INTO swear_log (id, guild_id, vc_id,nickname) VALUES \
-        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.nickname +"') ON CONFLICT DO NOTHING;"
+        var q = "INSERT INTO swear_log (id, guild_id, vc_id,nickname, username) VALUES \
+        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.nickname +"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
     }
     
         db.query(q).then(res => {
