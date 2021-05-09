@@ -511,7 +511,7 @@ async function connect(msg, mapKey) {
         // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
         members = voice_Channel.members;
         // console.log(members);
-        members.forEach(member => initMember(member));
+        members.forEach(member => initMember(member,mapKey,guildMap[mapKey].voice_Channel_ID));
         // ^ add to swear_log if not present
         speak_impl(voice_Connection, mapKey)
         voice_Connection.on('disconnect', async(e) => {
@@ -586,7 +586,7 @@ function process_commands_query(txt, mapKey, user) {
                 
                 userRecord[user.username]['swearCount'] = intersection.size;
                 userRecord[user.username]['swearCost'] = swearSum;
-                initMember(mapKey,guildMap.mapKey.voice_Channel_ID)
+                //initMember(mapKey,guildMap.mapKey.voice_Channel_ID)
             }
 
             
