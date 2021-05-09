@@ -594,7 +594,7 @@ function process_commands_query(txt, mapKey, user) {
                 userRecord[user.username]['swearCount'] += intersection.size;
                 userRecord[user.username]['swearCost'] += swearSum;
             } else {                
-                await resp = initMember({user})
+                //await resp = initMember({user})
                 userRecord[user.username]['swearCount'] = intersection.size;
                 userRecord[user.username]['swearCost'] = swearSum;
                 //initMember(mapKey,guildMap.mapKey.voice_Channel_ID)
