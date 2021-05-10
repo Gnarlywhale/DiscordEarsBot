@@ -497,7 +497,7 @@ function initMember(member,guildID,voiceID){
             
             userRecord[member.user.username].alias = res.rows[0].alias;
             userRecord[member.user.username].swearCount = res.rows[0]['swear_count'];
-            userRecord[member.user.username].swearCost = parseFloat(res.rows[0]['swear_cost']);
+            userRecord[member.user.username].swearCost = parseFloat(res.rows[0]['total_cost']);
             
             console.log(res.rows[0])
             console.log(res.rows[0]['swear_count'])
