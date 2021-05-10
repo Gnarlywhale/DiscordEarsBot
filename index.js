@@ -539,7 +539,7 @@ function initMember(member,guildID,voiceID,textID){
 
 async function directConnect(mapKey, voice_id, member){
     console.log('directConnecting');
-    db.query("SELECT text_id FROM swear_log WHERE username = '"+member.user.username+ "' AND guild_id = '"+mapKey+"' AND vc_id = '"+voice_id+"';").then(res => {
+    db.query("SELECT text_id FROM swear_log WHERE username = '"+member.user.username+ "' AND guild_id = '"+mapKey+"' AND vc_id = '"+voice_id+"';").then(async res => {
         console.log(res)
         try {
        let voice_Channel = await discordClient.channels.fetch(member.voice.channelID);
