@@ -578,7 +578,7 @@ function speak_impl(voice_Connection, mapKey) {
     })
 }
 
-function process_commands_query(txt, mapKey, user) {
+async function process_commands_query(txt, mapKey, user) {
     if (txt && txt.length) {
         let val = guildMap.get(mapKey);
         // Uncomment to send captured text to the discord
