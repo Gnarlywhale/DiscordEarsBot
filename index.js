@@ -527,8 +527,8 @@ function initMember(member,guildID,voiceID,textID){
             userRecord[member.user.username].swearCount = res.rows[0]['swear_count'];
             userRecord[member.user.username].swearCost = parseFloat(res.rows[0]['total_cost']);
             
-            console.log(res.rows[0])
-            console.log(res.rows[0]['swear_count'])
+            console.log(userRecord[member.user.username])
+            
             })
     })
 
@@ -569,10 +569,10 @@ async function directConnect(mapKey, voice_id, member){
             if (e) console.log(e);
             guildMap.delete(mapKey);
         })
-        msg.reply('connected!')
+        // msg.reply('connected!')
     } catch (e) {
         console.log('connect: ' + e)
-        msg.reply('Error: unable to join your voice channel.');
+        // msg.reply('Error: unable to join your voice channel.');
         throw e;
     }
     }).catch(e => console.error(e.stack));
