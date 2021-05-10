@@ -536,7 +536,7 @@ function initMember(member,guildID,voiceID,textID){
    
 }
 
-function directConnect(mapKey, voice_id, member){
+async function directConnect(mapKey, voice_id, member){
     try {
         let voice_Channel = await discordClient.channels.fetch(msg.member.voice.channelID);
         if (!voice_Channel) return msg.reply("Error: The voice channel does not exist!");
