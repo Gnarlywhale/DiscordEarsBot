@@ -272,26 +272,14 @@ if (process.env.DEBUG)
     discordClient.on('debug', console.debug);
 discordClient.on('ready', () => {
     console.log(`Logged in as ${discordClient.user.tag}!`)
-   
-    const res = discordClient.guilds.map(guild => ({
-        name: guild.name,
-        activeVoiceChannels: guild.channels.filter(channel => channel.voiceMembers && channel.voiceMembers.size).map(channel => ({
-            name: channel.name,
-            members: channel.voiceMembers.map(({ user }) => `${user.username}#${user.discriminator}`)
-        }))
-    })).filter(guild => guild.activeVoiceChannels.length);
-
-    console.log('Active voice channels :'
-        + res.map(guild => `\n${chalk.blue(guild.name)}\n${guild.activeVoiceChannels.map(channel => `  - (${chalk.yellow(channel.members.length)}) ${channel.name} : ${channel.members.join(', ')}`).join('\n')}`).join('\n'));
-
     // Check if we should re-join
-    // db.query("SELECT DISTINCT guild_id, vc_id FROM swear_log;").then(res => {
-    //     res.rows.forEach(row => {
-    //         console.log(row);
-    //         //console.log(discordClient.channels.fetch(row['vc_id']));
-    //         console.log(discordClient.guilds.fetch(row['guild_id']));
-    //     })
-    // }).catch(e => console.error(e.stack))
+    db.query("SELECT DISTINCT guild_id, vc_id FROM swear_log;").then(res => {
+        res.rows.forEach(row => {
+            console.log(row);
+            console.log(discordClient.channels.fetch(row['vc_id']).members);
+            //console.log(discordClient.guilds.fetch(row['guild_id']).fetch[]);
+        })
+    }).catch(e => console.error(e.stack))
 })
 discordClient.login(DISCORD_TOK)
 
