@@ -282,8 +282,6 @@ if(!VC){
 }
         if (VC.members.size > 0){
             //directConnect(row['guild_id'], row['voice_id'], VC.members)
-            console.log('whoooot');
-            console.log(VC.members);
             directConnect(row['guild_id'],row['vc_id'],VC.members.values().next().value)
             // Active channel found! jump in
         }
@@ -493,6 +491,7 @@ function addServer(discordID,voiceID,msg){
     db.query(q).then( res => {
         db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => {
             jarTotal = parseFloat(res.rows[0]['sum']);
+            if (!(msg === undefined))
             showJarStatus(msg);
         }).catch(e => console.log(e.stack))
         //db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => console.log(res)).catch(e => console.log(e.stack))
@@ -542,6 +541,40 @@ async function directConnect(mapKey, voice_id, member){
     console.log('directConnecting');
     db.query("SELECT text_id FROM swear_log WHERE username = '"+member.user.username+ "' AND guild_id = '"+mapKey+"' AND vc_id = '"+voice_id+"';").then(res => {
         console.log(res)
+        try {
+       let voice_Channel = await discordClient.channels.fetch(member.voice.channelID);
+        if (!voice_Channel) return msg.reply("Error: The voice channel does not exist!");
+        
+        let text_Channel = await discordClient.channels.fetch(res.rows[0]['text_id']);
+        if (!text_Channel) return msg.reply("Error: The text channel does not exist!");
+        let voice_Connection = await voice_Channel.join();
+        voice_Connection.play(new Silence(), { type: 'opus' });
+        guildMap.set(mapKey, {
+            'text_Channel': text_Channel,
+            'voice_Channel': voice_Channel,
+            'voice_Channel_ID':member.voice.channelID,
+            'voice_Connection': voice_Connection,
+            'debug': false,
+        });
+                // Add current guid id (mapKey) and voice channel id (msg.member.voice.channelID)
+        // to swear_jar if they don't currently exist
+        addServer(mapKey,member.voice.channelID)
+        // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
+        members = voice_Channel.members;
+        // console.log(members);
+        members.forEach(member => initMember(member,mapKey,member.voice.channelID, msg.channel.id));
+        // ^ add to swear_log if not present
+        speak_impl(voice_Connection, mapKey)
+        voice_Connection.on('disconnect', async(e) => {
+            if (e) console.log(e);
+            guildMap.delete(mapKey);
+        })
+        msg.reply('connected!')
+    } catch (e) {
+        console.log('connect: ' + e)
+        msg.reply('Error: unable to join your voice channel.');
+        throw e;
+    }
     }).catch(e => console.error(e.stack));
     // try {
     //     let voice_Channel = await discordClient.channels.fetch(msg.member.voice.channelID);
