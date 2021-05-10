@@ -343,7 +343,7 @@ discordClient.on('message', async (msg) => {
             } else {
                 if (!guildMap.has(mapKey)){
                     await connect(msg, mapKey);
-                    console.log(msg)
+                    console.log(msg.channel)
                     initMember(msg.member,mapKey,msg.member.voice.channelID,msg.channel.id)                 
                     io.emit('bot-connected',Array(messageFactory({middle:'Swear Jar Connected'})))
                 }else
