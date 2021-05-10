@@ -316,7 +316,7 @@ discordClient.on('message', async (msg) => {
             } else {
                 if (!guildMap.has(mapKey)){
                     await connect(msg, mapKey);
-                    showJarStatus(msg)
+                    
                     io.emit('bot-connected',Array(messageFactory({middle:'Swear Jar Connected'})))
                 }else
                     msg.reply('Already connected')
@@ -457,12 +457,15 @@ class Silence extends Readable {
   }
 }
 
-function addServer(discordID,voiceID){
+function addServer(discordID,voiceID,msg){
     var q = "INSERT INTO swear_jar (guild_id, vc_id) VALUES \
     ('"+discordID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
 
     db.query(q).then( res => {
-        db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => jarTotal = parseFloat(res.rows[0]['sum'])).catch(e => console.log(e.stack))
+        db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => {
+            jarTotal = parseFloat(res.rows[0]['sum']);
+            showJarStatus(msg);
+        }).catch(e => console.log(e.stack))
         //db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => console.log(res)).catch(e => console.log(e.stack))
         console.log('Logged guild.')
         
@@ -520,7 +523,7 @@ async function connect(msg, mapKey) {
         });
         // Add current guid id (mapKey) and voice channel id (msg.member.voice.channelID)
         // to swear_jar if they don't currently exist
-        addServer(mapKey,msg.member.voice.channelID)
+        addServer(mapKey,msg.member.voice.channelID,msg)
         // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
         members = voice_Channel.members;
         // console.log(members);
