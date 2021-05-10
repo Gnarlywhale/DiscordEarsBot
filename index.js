@@ -281,6 +281,7 @@ if(!VC){
     return(message.channel.send("channel inaccessible"));
 }
         if (VC.members.size > 0){
+            //directConnect(row['guild_id'], row['voice_id'], VC.members)
             console.log('whoooot');
             // Active channel found! jump in
         }
@@ -497,7 +498,7 @@ function addServer(discordID,voiceID,msg){
         
     }).catch(e => console.error(e.stack))
 }
-function initMember(member,guildID,voiceID){
+function initMember(member,guildID,voiceID,textID){
 
     if (!member.user.bot){
 
@@ -505,12 +506,12 @@ function initMember(member,guildID,voiceID){
 
         // Add member to local user record
         if (member.nickname === undefined){
-            var q = "INSERT INTO swear_log (guild_id, vc_id, username) VALUES \
-        ('"+guildID+"', '"+voiceID+"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
+            var q = "INSERT INTO swear_log (guild_id, vc_id, username, text_id) VALUES \
+        ('"+guildID+"', '"+voiceID+"', '"+member.user.username +"','"+textID+"') ON CONFLICT DO NOTHING;"
 
     }else{
-        var q = "INSERT INTO swear_log (guild_id, vc_id,alias, username) VALUES \
-        ('"+guildID+"', '"+voiceID+"', '"+member.nickname +"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
+        var q = "INSERT INTO swear_log (guild_id, vc_id,alias, username, text_id) VALUES \
+        ('"+guildID+"', '"+voiceID+"', '"+member.nickname +"', '"+member.user.username +"','"+textID+"') ON CONFLICT DO NOTHING;"
     }
     console.log('query:')
     console.log(q);
@@ -533,6 +534,42 @@ function initMember(member,guildID,voiceID){
 }
 
    
+}
+
+function directConnect(mapKey, voice_id, member){
+    try {
+        let voice_Channel = await discordClient.channels.fetch(msg.member.voice.channelID);
+        if (!voice_Channel) return msg.reply("Error: The voice channel does not exist!");
+        let text_Channel = await discordClient.channels.fetch(msg.channel.id);
+        if (!text_Channel) return msg.reply("Error: The text channel does not exist!");
+        let voice_Connection = await voice_Channel.join();
+        voice_Connection.play(new Silence(), { type: 'opus' });
+        guildMap.set(mapKey, {
+            'text_Channel': text_Channel,
+            'voice_Channel': voice_Channel,
+            'voice_Channel_ID':msg.member.voice.channelID,
+            'voice_Connection': voice_Connection,
+            'debug': false,
+        });
+        // Add current guid id (mapKey) and voice channel id (msg.member.voice.channelID)
+        // to swear_jar if they don't currently exist
+        addServer(mapKey,msg.member.voice.channelID,msg)
+        // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
+        members = voice_Channel.members;
+        // console.log(members);
+        members.forEach(member => initMember(member,mapKey,msg.member.voice.channelID, msg.channel.id));
+        // ^ add to swear_log if not present
+        speak_impl(voice_Connection, mapKey)
+        voice_Connection.on('disconnect', async(e) => {
+            if (e) console.log(e);
+            guildMap.delete(mapKey);
+        })
+        msg.reply('connected!')
+    } catch (e) {
+        console.log('connect: ' + e)
+        msg.reply('Error: unable to join your voice channel.');
+        throw e;
+    }
 }
 async function connect(msg, mapKey) {
     try {
