@@ -431,7 +431,7 @@ discordClient.on('message', async (msg) => {
                 updateSwears();
             }
         }else if (msg.content.trim().toLowerCase()  == _CMD_TOTAL){
-            msg.reply('The current swear jar total is: $'+jarTotal)
+            msg.reply('The current swear jar total is: $'+jarTotal.toFixed(2))
         } else if (msg.content.trim().toLowerCase()  == _CMD_STATUS){
             showJarStatus(msg)
 
