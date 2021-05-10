@@ -274,7 +274,7 @@ discordClient.on('ready', async () => {
     console.log(`Logged in as ${discordClient.user.tag}!`)
     // Check if we should re-join
     db.query("SELECT DISTINCT guild_id, vc_id FROM swear_log;").then(async res => {
-        res.rows.forEach(row => {
+        res.rows.forEach(async row => {
 
             let VC = await discordClient.channels.cache.get(row['vc_id']);
 if(!VC){
