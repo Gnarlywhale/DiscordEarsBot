@@ -538,7 +538,7 @@ function initMember(member,guildID,voiceID,textID){
 }
 
 async function directConnect(mapKey, voice_id, member){
-    console.log(directConnecting);
+    console.log('directConnecting');
     db.query("SELECT text_id FROM swear_log WHERE username = '"+member.user.username+ "' AND guild_id = '"+mapKey+"' AND vc_id = '"+voice_id+"';").then(res => {
         console.log(res)
     }).catch(e => console.error(e.stack));
