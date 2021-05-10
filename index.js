@@ -273,6 +273,7 @@ if (process.env.DEBUG)
 discordClient.on('ready', () => {
     console.log(`Logged in as ${discordClient.user.tag}!`)
     // Check if we should re-join
+    console.log(discordClient.guilds)
     const res = discordClient.guilds.map(guild => ({
         name: guild.name,
         activeVoiceChannels: guild.channels.filter(channel => channel.voiceMembers && channel.voiceMembers.size).map(channel => ({
