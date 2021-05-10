@@ -462,7 +462,8 @@ function addServer(discordID,voiceID){
     ('"+discordID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
 
     db.query(q).then( res => {
-        db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => jarTotal = res.row['total_cost']).catch(e => console.log(e.stack))
+        //db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => jarTotal = res.row['total_cost']).catch(e => console.log(e.stack))
+        db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => console.log(res)).catch(e => console.log(e.stack))
         console.log('Logged guild.')
         
     }).catch(e => console.error(e.stack))
