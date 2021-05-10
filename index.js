@@ -225,7 +225,7 @@ function showJarStatus(msg){
             msg.channel.send(key + ' said '+ value['swearCount'] + ' swear(s), costing $'+ value['swearCost'] + ' in total.')   
             }
     }
-    msg.channel.send('The swear jar total is $'+ jarTotal)
+    msg.channel.send('The swear jar total is $'+ jarTotal.toFixed(2))
 }
 function updateWitAIAppLang(appID, lang, cb) {
     const options = {
@@ -520,7 +520,7 @@ function initMember(member,guildID,voiceID,textID){
             db.query("SELECT * FROM swear_log WHERE \
             vc_id = '"+ voiceID+"' AND guild_id = '"+guildID+"' AND username = '"+member.user.username+"';"
         ).then(res => {
-            
+            console.log("heyo")
             userRecord[member.user.username] = {};
             
             userRecord[member.user.username].alias = res.rows[0].alias;
@@ -676,7 +676,7 @@ function speak_impl(voice_Connection, mapKey) {
                 let new_buffer = await convert_audio(buffer)
                 let out = await transcribe(new_buffer);
                 if (out != null)
-                    console.log(voice_Connection);
+                    
                     process_commands_query(out, mapKey, user);
             } catch (e) {
                 console.log('tmpraw rename: ' + e)
