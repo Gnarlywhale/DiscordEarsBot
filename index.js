@@ -543,10 +543,10 @@ async function directConnect(mapKey, voice_id, member){
         console.log(res)
         try {
        let voice_Channel = await discordClient.channels.fetch(member.voice.channelID);
-        if (!voice_Channel) return msg.reply("Error: The voice channel does not exist!");
+        //if (!voice_Channel) return msg.reply("Error: The voice channel does not exist!");
         
         let text_Channel = await discordClient.channels.fetch(res.rows[0]['text_id']);
-        if (!text_Channel) return msg.reply("Error: The text channel does not exist!");
+        //if (!text_Channel) return msg.reply("Error: The text channel does not exist!");
         let voice_Connection = await voice_Channel.join();
         voice_Connection.play(new Silence(), { type: 'opus' });
         guildMap.set(mapKey, {
@@ -562,7 +562,7 @@ async function directConnect(mapKey, voice_id, member){
         // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
         members = voice_Channel.members;
         // console.log(members);
-        members.forEach(member => initMember(member,mapKey,member.voice.channelID, msg.channel.id));
+        members.forEach(member => initMember(member,mapKey,member.voice.channelID,res.rows[0]['text_id']));
         // ^ add to swear_log if not present
         speak_impl(voice_Connection, mapKey)
         voice_Connection.on('disconnect', async(e) => {
