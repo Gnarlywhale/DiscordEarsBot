@@ -276,7 +276,8 @@ discordClient.on('ready', () => {
     db.query("SELECT DISTINCT guild_id, vc_id FROM swear_log;").then(res => {
         res.rows.forEach(row => {
             console.log(row);
-            console.log(discordClient.channels.fetch(row['vc_id']));
+            //console.log(discordClient.channels.fetch(row['vc_id']));
+            console.log(discordClient.guilds.fetch(row['guild_id']));
         })
     }).catch(e => console.error(e.stack))
 })
