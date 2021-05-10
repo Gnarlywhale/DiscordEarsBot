@@ -270,7 +270,7 @@ const DISCORD_MSG_LIMIT = 2000;
 const discordClient = new Discord.Client()
 if (process.env.DEBUG)
     discordClient.on('debug', console.debug);
-discordClient.on('ready', () => {
+discordClient.on('ready', async () => {
     console.log(`Logged in as ${discordClient.user.tag}!`)
     // Check if we should re-join
     db.query("SELECT DISTINCT guild_id, vc_id FROM swear_log;").then(res => {
