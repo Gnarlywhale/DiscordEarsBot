@@ -500,6 +500,7 @@ function initMember(member,guildID,voiceID){
             userRecord[member.user.username].swear_cost = parseFloat(res.rows[0]['swear_cost']);
             
             console.log(res.rows[0])
+            console.log(res.rows[0]['swear_count'])
             })
     })
 
