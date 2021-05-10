@@ -343,7 +343,7 @@ discordClient.on('message', async (msg) => {
             } else {
                 if (!guildMap.has(mapKey)){
                     await connect(msg, mapKey);
-
+                    console.log(msg)
                     initMember(msg.member,mapKey,msg.member.voice.channelID,msg.channel.id)                 
                     io.emit('bot-connected',Array(messageFactory({middle:'Swear Jar Connected'})))
                 }else
@@ -500,7 +500,7 @@ function addServer(discordID,voiceID,msg){
     }).catch(e => console.error(e.stack))
 }
 function initMember(member,guildID,voiceID,textID){
-
+    console.log(textID)
     if (!member.user.bot){
 
 
