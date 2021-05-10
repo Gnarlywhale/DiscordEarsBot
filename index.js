@@ -703,8 +703,10 @@ async function process_commands_query(txt, mapKey, user) {
                  
                 userRecord[user.username]['swearCount'] += intersection.size;
                 userRecord[user.username]['swearCost'] += swearSum;
-                db.query("UPDATE swear_log SET swear_count = "+intersection.size+", total_cost = "+swearSum+"\
-                 WHERE  guild_id ="+mapKey+" AND vc_id = "+guildMap.get(mapKey).voice_Channel_ID+";")
+                q = "UPDATE swear_log SET swear_count = "+intersection.size+", total_cost = "+swearSum+"\
+                WHERE  guild_id ="+mapKey+" AND vc_id = "+guildMap.get(mapKey).voice_Channel_ID+";"
+                console.log(q);
+                db.query(q)
             } else {                
                 initMember({'user':user, 'nickname':undefined})
                 while(!(user.username in userRecord)) await sleep(500);
