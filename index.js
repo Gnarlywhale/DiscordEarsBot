@@ -41,8 +41,8 @@ const server = express()
 // Defaults
 jarTotal = 0;
 userRecord = {};
-low = .25;
-high = 1;
+low = .10;
+high = .25;
 swearList = {}
 swearSet = new Set()
 function updateSwears()
@@ -272,8 +272,27 @@ if (process.env.DEBUG)
     discordClient.on('debug', console.debug);
 discordClient.on('ready', () => {
     console.log(`Logged in as ${discordClient.user.tag}!`)
+    // Check if we should re-join
+    db.query("SELECT DISTINCT guild_id, vc_id FROM swear_log;").then(res => {
+        res.rows.forEach(row => {
+            console.log(row);
+            discordClient.guilds.get(row['guild_id'])
+        })
+    }).catch(e => console.error(e.stack))
 })
 discordClient.login(DISCORD_TOK)
+
+function restartCheck(){
+    // For each guild + voice channel pair in swear log
+    // Check if people are currently in a voice channel
+    // if so, connect
+    db.query("SELECT DISTINCT guild_id, vc_id FROM swear_log;").then(res => {
+        res.rows.forEach(row => {
+            discordClient.guilds.get(row['guild_id'])
+        })
+    }).catch(e => console.error(e.stack))
+}
+
 
 const PREFIX = '&';
 const _CMD_HELP        = PREFIX + 'help';
@@ -444,7 +463,7 @@ function getHelpString() {
         out += PREFIX + 'leave\n';
         out += '```';
         out += 'Use, `jar` `low` or `high` with a number to set new jar total and swear costs (non-retroactive).\n';
-        out += 'Example `*set jar 14.25`\n'
+        out += 'Example `&set jar 14.25`\n'
     return out;
 }
 
