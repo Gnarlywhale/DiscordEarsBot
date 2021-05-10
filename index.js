@@ -462,6 +462,7 @@ function addServer(discordID,voiceID){
     ('"+discordID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
 
     db.query(q).then( res => {
+        db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => jarTotal = res.row[0]).catch(e => console.log(e.stack))
         console.log('Logged guild.')
         
     }).catch(e => console.error(e.stack))
@@ -609,7 +610,11 @@ async function process_commands_query(txt, mapKey, user) {
             // if (user.username.toLowerCase() == 'benindetto') user.username = 'Andrew';
             // if (user.username.toLowerCase() == 'emmaeira') user.username = 'Emma';
             // if (user.username.toLowerCase() == 'gnarlywhale') user.username = 'Riley';
-            for (let item of intersection.values()) swearPayload.push(messageFactory({top: userRecord[user.username]['alias']+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
+            name = user.username;
+            if (userRecord[user.username]['alias'] != 'alias') {
+                name = userRecord[user.username]['alias']
+            } 
+            for (let item of intersection.values()) swearPayload.push(messageFactory({top: name +' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
             
