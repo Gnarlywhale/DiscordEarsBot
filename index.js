@@ -284,7 +284,7 @@ if(!VC){
             //directConnect(row['guild_id'], row['voice_id'], VC.members)
             console.log('whoooot');
             console.log(VC.members);
-            directConnect();
+            directConnect(row['guild_id'],row['vc_id'],VC.members.values().next().value)
             // Active channel found! jump in
         }
         })
