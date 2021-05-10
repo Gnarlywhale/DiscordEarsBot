@@ -474,12 +474,12 @@ function initMember(member,guildID,voiceID){
 
         // Add member to local user record
         if (member.nickname === undefined){
-            var q = "INSERT INTO swear_log (id, guild_id, vc_id, username) VALUES \
-        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
+            var q = "INSERT INTO swear_log (guild_id, vc_id, username) VALUES \
+        ('"+guildID+"', '"+voiceID+"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
 
     }else{
-        var q = "INSERT INTO swear_log (id, guild_id, vc_id,alias, username) VALUES \
-        ('"+member.user.id+"','"+guildID+"', '"+voiceID+"', '"+member.nickname +"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
+        var q = "INSERT INTO swear_log (guild_id, vc_id,alias, username) VALUES \
+        ('"+guildID+"', '"+voiceID+"', '"+member.nickname +"', '"+member.user.username +"') ON CONFLICT DO NOTHING;"
     }
     console.log('query:')
     console.log(q);
@@ -488,6 +488,7 @@ function initMember(member,guildID,voiceID){
             vc_id = '"+ voiceID+"' AND guild_id = '"+guildID+"' AND username = '"+member.user.username+"';"
         ).then(res => {
             userRecord[member.user.username] = {};
+            
             userRecord[member.user.username].alias = res.alias;
             userRecord[member.user.username].swear_count = res.swear_count;
             userRecord[member.user.username].swear_cost = res.swear_cost;
@@ -590,11 +591,14 @@ function process_commands_query(txt, mapKey, user) {
             intersection.forEach( (x) => swearSum += swearList[x])
             jarTotal += swearSum
             if (user.username in userRecord){
-                
+                 
                 userRecord[user.username]['swearCount'] += intersection.size;
                 userRecord[user.username]['swearCost'] += swearSum;
+                db.query("UPDATE swear_log SET swear_count = "+intersection.size+", total_cost = "+swearSum+"\
+                 WHERE  guild_id ="+mapKey+" AND vc_id = "+guildMap.mapKey.voice_Channel_ID+";")
             } else {                
-                //await resp = initMember({user})
+                initMember({'user':user, 'nickname':undefined})
+                while(!(user.username in userRecord)) await sleep(500);
                 userRecord[user.username]['swearCount'] = intersection.size;
                 userRecord[user.username]['swearCost'] = swearSum;
                 //initMember(mapKey,guildMap.mapKey.voice_Channel_ID)
@@ -602,10 +606,10 @@ function process_commands_query(txt, mapKey, user) {
 
             
             swearPayload = Array();
-            if (user.username.toLowerCase() == 'benindetto') user.username = 'Andrew';
-            if (user.username.toLowerCase() == 'emmaeira') user.username = 'Emma';
-            if (user.username.toLowerCase() == 'gnarlywhale') user.username = 'Riley';
-            for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
+            // if (user.username.toLowerCase() == 'benindetto') user.username = 'Andrew';
+            // if (user.username.toLowerCase() == 'emmaeira') user.username = 'Emma';
+            // if (user.username.toLowerCase() == 'gnarlywhale') user.username = 'Riley';
+            for (let item of intersection.values()) swearPayload.push(messageFactory({top: userRecord[user.username]['alias']+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
             
