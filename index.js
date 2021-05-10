@@ -275,8 +275,26 @@ discordClient.on('ready', () => {
     // Check if we should re-join
     db.query("SELECT DISTINCT guild_id, vc_id FROM swear_log;").then(res => {
         res.rows.forEach(row => {
-            console.log(row);
-            console.log(discordClient.channels.fetch(row['vc_id']).members);
+
+            let VC = await discordClient.channels.cache.get(row['vc_id']);
+if(!VC){
+    return(message.channel.send("channel inaccessible"));
+}
+MemberCount = VC.members.size;
+console.log(MemberCount);
+// //Might need members.cache.size;
+// if(MemberCount <= 1){ //Only the bot in vc
+//     VC.leave();
+//     //Leaves if the bit is the only user in vc
+// }
+            let myGuild = discordClient.guilds.fetch(rows['guild_id']);
+let memberCount = myGuild.memberCount;
+let memberCountChannel = myGuild.channels.fetch(row['vc_id']);
+//memberCountChannel.setName("Member•" +memberCount+ "•User")
+console.log(row);
+console.log(memberCountChannel)
+            
+            //console.log(discordClient.channels.fetch(row['vc_id']).members);
             //console.log(discordClient.guilds.fetch(row['guild_id']).fetch[]);
         })
     }).catch(e => console.error(e.stack))
