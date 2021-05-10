@@ -283,6 +283,7 @@ if(!VC){
         if (VC.members.size > 0){
             //directConnect(row['guild_id'], row['voice_id'], VC.members)
             console.log('whoooot');
+            directConnect();
             // Active channel found! jump in
         }
         })
@@ -537,39 +538,43 @@ function initMember(member,guildID,voiceID,textID){
 }
 
 async function directConnect(mapKey, voice_id, member){
-    try {
-        let voice_Channel = await discordClient.channels.fetch(msg.member.voice.channelID);
-        if (!voice_Channel) return msg.reply("Error: The voice channel does not exist!");
-        let text_Channel = await discordClient.channels.fetch(msg.channel.id);
-        if (!text_Channel) return msg.reply("Error: The text channel does not exist!");
-        let voice_Connection = await voice_Channel.join();
-        voice_Connection.play(new Silence(), { type: 'opus' });
-        guildMap.set(mapKey, {
-            'text_Channel': text_Channel,
-            'voice_Channel': voice_Channel,
-            'voice_Channel_ID':msg.member.voice.channelID,
-            'voice_Connection': voice_Connection,
-            'debug': false,
-        });
-        // Add current guid id (mapKey) and voice channel id (msg.member.voice.channelID)
-        // to swear_jar if they don't currently exist
-        addServer(mapKey,msg.member.voice.channelID,msg)
-        // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
-        members = voice_Channel.members;
-        // console.log(members);
-        members.forEach(member => initMember(member,mapKey,msg.member.voice.channelID, msg.channel.id));
-        // ^ add to swear_log if not present
-        speak_impl(voice_Connection, mapKey)
-        voice_Connection.on('disconnect', async(e) => {
-            if (e) console.log(e);
-            guildMap.delete(mapKey);
-        })
-        msg.reply('connected!')
-    } catch (e) {
-        console.log('connect: ' + e)
-        msg.reply('Error: unable to join your voice channel.');
-        throw e;
-    }
+    console.log(directConnecting);
+    db.query("SELECT text_id FROM swear_log WHERE username = '"+member.user.username+ "' AND guild_id = '"+mapKey+"' AND vc_id = '"+voice_id+"';").then(res => {
+        console.log(res)
+    }).catch(e => console.error(e.stack));
+    // try {
+    //     let voice_Channel = await discordClient.channels.fetch(msg.member.voice.channelID);
+    //     if (!voice_Channel) return msg.reply("Error: The voice channel does not exist!");
+    //     let text_Channel = await discordClient.channels.fetch(msg.channel.id);
+    //     if (!text_Channel) return msg.reply("Error: The text channel does not exist!");
+    //     let voice_Connection = await voice_Channel.join();
+    //     voice_Connection.play(new Silence(), { type: 'opus' });
+    //     guildMap.set(mapKey, {
+    //         'text_Channel': text_Channel,
+    //         'voice_Channel': voice_Channel,
+    //         'voice_Channel_ID':msg.member.voice.channelID,
+    //         'voice_Connection': voice_Connection,
+    //         'debug': false,
+    //     });
+    //     // Add current guid id (mapKey) and voice channel id (msg.member.voice.channelID)
+    //     // to swear_jar if they don't currently exist
+    //     addServer(mapKey,msg.member.voice.channelID,msg)
+    //     // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
+    //     members = voice_Channel.members;
+    //     // console.log(members);
+    //     members.forEach(member => initMember(member,mapKey,msg.member.voice.channelID, msg.channel.id));
+    //     // ^ add to swear_log if not present
+    //     speak_impl(voice_Connection, mapKey)
+    //     voice_Connection.on('disconnect', async(e) => {
+    //         if (e) console.log(e);
+    //         guildMap.delete(mapKey);
+    //     })
+    //     msg.reply('connected!')
+    // } catch (e) {
+    //     console.log('connect: ' + e)
+    //     msg.reply('Error: unable to join your voice channel.');
+    //     throw e;
+    // }
 }
 async function connect(msg, mapKey) {
     try {
