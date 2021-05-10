@@ -492,11 +492,12 @@ function initMember(member,guildID,voiceID){
             db.query("SELECT * FROM swear_log WHERE \
             vc_id = '"+ voiceID+"' AND guild_id = '"+guildID+"' AND username = '"+member.user.username+"';"
         ).then(res => {
+            
             userRecord[member.user.username] = {};
             
-            userRecord[member.user.username].alias = res.alias;
-            userRecord[member.user.username].swear_count = res.swear_count;
-            userRecord[member.user.username].swear_cost = res.swear_cost;
+            userRecord[member.user.username].alias = res.rows[0].alias;
+            userRecord[member.user.username].swear_count = res.rows[0].swear_count;
+            userRecord[member.user.username].swear_cost = parseFloat(res.rows[0].swear_cost);
             
             console.log(res.rows[0])
             })
