@@ -343,8 +343,6 @@ discordClient.on('message', async (msg) => {
             } else {
                 if (!guildMap.has(mapKey)){
                     await connect(msg, mapKey);
-                    console.log(msg.channel)
-                    console.log(msg.channel.id)
                     initMember(msg.member,mapKey,msg.member.voice.channelID,msg.channel.id)                 
                     io.emit('bot-connected',Array(messageFactory({middle:'Swear Jar Connected'})))
                 }else
@@ -594,7 +592,7 @@ async function connect(msg, mapKey) {
         // Get current list of voice channel members (usernames and alias (might as well set andrew and emma's directly)
         members = voice_Channel.members;
         // console.log(members);
-        members.forEach(member => initMember(member,mapKey,msg.member.voice.channelID));
+        members.forEach(member => initMember(member,mapKey,msg.member.voice.channelID,msg.channel.id));
         // ^ add to swear_log if not present
         speak_impl(voice_Connection, mapKey)
         voice_Connection.on('disconnect', async(e) => {
