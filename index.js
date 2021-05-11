@@ -222,7 +222,7 @@ function listWitAIApps(cb) {
 function showJarStatus(msg){
     if (Object.keys(userRecord).length > 0){
         for(const [key, value] of Object.entries(userRecord)){
-            msg.channel.send(key + ' said '+ value['swearCount'] + ' swear(s), costing $'+ value['swearCost'] + ' in total.')   
+            msg.channel.send(key + ' said '+ value['swearCount'] + ' swear(s), costing $'+ value['swearCost'].toFixed(2) + ' in total.')   
             }
     }
     msg.channel.send('The swear jar total is $'+ jarTotal.toFixed(2))
