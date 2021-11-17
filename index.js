@@ -817,7 +817,7 @@ async function transcribe_witai(buffer) {
     }
 
     try {
-        io.emit('swear',Array(messageFactory({top: 'Debug', middle: 'Sending',duration:2000})))
+        // io.emit('swear',Array(messageFactory({top: 'Debug', middle: 'Sending',duration:2000})))
         console.log('transcribe_witai')
         const extractSpeechIntent = util.promisify(witClient.extractSpeechIntent);
         var stream = Readable.from(buffer);
@@ -825,8 +825,8 @@ async function transcribe_witai(buffer) {
         const output = await extractSpeechIntent(WITAPIKEY, stream, contenttype)
         witAI_lastcallTS = Math.floor(new Date());
         
-        output = jsonEscape(output);
-        jsonOut = JSON.parse(output.substr(output.indexOf('{  "entities"')))
+        cleanOutput = jsonEscape(output);
+        jsonOut = JSON.parse(cleanOutput.substr(cleanOutput.indexOf('{  "entities"')))
         stream.destroy()
         return jsonOut.text;
         
