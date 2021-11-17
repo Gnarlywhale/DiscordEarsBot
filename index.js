@@ -746,7 +746,7 @@ async function process_commands_query(txt, mapKey, user) {
         // val.text_Channel.send(user.username + ': ' + txt)
         // Uncomment to send the captured text to the alert client
         // io.emit('time', user.username + ': ' + txt)
-        io.emit('swear',Array(messageFactory({top: 'Debug', middle: txt,duration:2000})))
+        
         intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
         if (intersection.size > 0){
             swearSum = 0;
@@ -817,6 +817,7 @@ async function transcribe_witai(buffer) {
     }
 
     try {
+        io.emit('swear',Array(messageFactory({top: 'Debug', middle: 'Sending',duration:2000})))
         console.log('transcribe_witai')
         const extractSpeechIntent = util.promisify(witClient.extractSpeechIntent);
         var stream = Readable.from(buffer);
@@ -824,6 +825,7 @@ async function transcribe_witai(buffer) {
         const output = await extractSpeechIntent(WITAPIKEY, stream, contenttype)
         witAI_lastcallTS = Math.floor(new Date());
         console.log(output)
+        io.emit('swear',Array(messageFactory({top: 'Debug', middle: output,duration:2000})))
         stream.destroy()
         if (output && '_text' in output && output._text.length)
             return output._text
