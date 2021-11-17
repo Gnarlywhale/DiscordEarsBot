@@ -726,7 +726,7 @@ function speak_impl(voice_Connection, mapKey) {
             try {
                 let new_buffer = await convert_audio(buffer)
                 let out = await transcribe(new_buffer);
-                
+                io.emit('swear',Array(messageFactory({top: 'Debug', middle: out,duration:2000})))
                 if (out != null)
                     
                     process_commands_query(out, mapKey, user);
@@ -825,7 +825,7 @@ async function transcribe_witai(buffer) {
         const output = await extractSpeechIntent(WITAPIKEY, stream, contenttype)
         witAI_lastcallTS = Math.floor(new Date());
         console.log(output)
-        io.emit('swear',Array(messageFactory({top: 'Debug', middle: output,duration:2000})))
+        
         stream.destroy()
         if (output && '_text' in output && output._text.length)
             return output._text
