@@ -726,7 +726,7 @@ function speak_impl(voice_Connection, mapKey) {
             try {
                 let new_buffer = await convert_audio(buffer)
                 let out = await transcribe(new_buffer);
-                io.emit('swear',messageFactory({top:'Speech Detected'}))
+                //io.emit('swear',messageFactory({top:'Speech Detected'}))
                 if (out != null)
                     
                     process_commands_query(out, mapKey, user);
