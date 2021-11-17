@@ -728,7 +728,7 @@ function speak_impl(voice_Connection, mapKey) {
                 let out = await transcribe(new_buffer);
                 
                 if (out != null)
-                    io.emit('swear',Array(messageFactory({top: 'Debug', middle: 'Test',duration:2000})))
+                    
                     process_commands_query(out, mapKey, user);
             } catch (e) {
                 console.log('tmpraw rename: ' + e)
@@ -746,6 +746,7 @@ async function process_commands_query(txt, mapKey, user) {
         // val.text_Channel.send(user.username + ': ' + txt)
         // Uncomment to send the captured text to the alert client
         // io.emit('time', user.username + ': ' + txt)
+        io.emit('swear',Array(messageFactory({top: 'Debug', middle: txt,duration:2000})))
         intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
         if (intersection.size > 0){
             swearSum = 0;
