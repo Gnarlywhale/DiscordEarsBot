@@ -42,43 +42,64 @@ const server = express()
 jarTotal = 0;
 userRecord = {};
 low = .10;
-high = .25;
+mid = .25
+high = .1;
 swearList = {}
 swearSet = new Set()
-function updateSwears()
+// Should parse in swear list from server
+// Add "suck my balls" as a 1 dollar swear
+async function updateSwears(guildId)
 {
-    swearList = {
-        bastard: low,
-        bastards: low,
-        dipshit: low,
-        dipshits: low,
-        shit: low,
-        shitting: low,
-        shitty: low,
-        fuck: low,
-        fucker: low,
-        fucked: low,
-        fucks: low,
-        fucking: low,
-        motherfucker: low,
-        motherfuckers: low,
-        motherfucking: low,
-        goddamn:low,
-        bitch: high,
-        bitches: high,
-        cunt: high,
-        cunts: high,
-        fuckers: low,
-        asshole: low,
-        assholes: low,
-        ass: low,
-        assis: low,
-        asses: low,
-        fatass: low,
-        fatasses: low,
-        bullshit: low
-    };
-    swearSet = new Set(Object.keys(swearList));
+    db.query("SELECT high_cost, low_cost, mid_cost FROM swear_jar WHERE guild_id='"+guildID+"';").then( res => {
+
+
+        low = Math.round(res.rows[0]["low_cost"] * 100) / 100;
+        mid = Math.round(res.rows[0]["mid_cost"] * 100) / 100;
+        high = Math.round(res.rows[0]["high_cost"] * 100) / 100;
+        db.query("SELECT * FROM swear_list WHERE guild_id='"+guildID+"';").then(res =>{
+            for(row in res.rows){
+                if(row['rank'] == 1) cost = low;
+                if(row['rank'] == 2) cost = mid;
+                if(row['rank'] == 3) cost = high;
+                swearList[row["word"]] = cost;
+            }
+            swearSet = new Set(Object.keys(swearList));
+        }).catch(e => console.error(e.stack))
+    }
+    ).catch(e => console.error(e.stack))
+
+    // swearList = {
+    //     bastard: low,
+    //     bastards: low,
+    //     dipshit: low,
+    //     dipshits: low,
+    //     shit: low,
+    //     shitting: low,
+    //     shitty: low,
+    //     fuck: low,
+    //     fucker: low,
+    //     fucked: low,
+    //     fucks: low,
+    //     fucking: low,
+    //     motherfucker: low,
+    //     motherfuckers: low,
+    //     motherfucking: low,
+    //     goddamn:low,
+    //     bitch: high,
+    //     bitches: high,
+    //     cunt: high,
+    //     cunts: high,
+    //     fuckers: low,
+    //     asshole: low,
+    //     assholes: low,
+    //     ass: low,
+    //     assis: low,
+    //     asses: low,
+    //     fatass: low,
+    //     fatasses: low,
+    //     bullshit: low
+    // };
+    // swearSet = new Set(Object.keys(swearList));
 }
 updateSwears()
 // const server = express()
@@ -396,50 +417,74 @@ discordClient.on('message', async (msg) => {
               }
             })
         } else if (msg.content.trim().toLowerCase().split(' ')[0]== _CMD_SET){
-            type = msg.content.trim().toLowerCase().split(' ')[1];
+            toks = msg.content.trim().toLowerCase().split(' ')
+            type = toks[1];
+            if (type == 'cost'){
+                word = toks.slice(2,toks.length-1);
+                cost = toks[toks.length-1];
+                cost = Math.round(cost * 100) / 100;
+                await db.query("UPDATE swear_list SET custom_cost="+cost+" WHERE word='"+word+"';");
+                updateSwears();
+            }else {
+            
+      
+      
+
             newVal = Math.round(msg.content.split(' ')[2] * 100) / 100;
             if (!isNaN(newVal)){
             
             if (type == 'total'){
+                await db.query("UPDATE swear_jar SET total="+newVal+" WHERE guild_id='"+msg.guild.id+"';")
                 jarTotal = newVal
                 msg.reply('The new swear jar total is: $' + jarTotal.toFixed(2));
             } else if (type == 'low') {
                 low = newVal;
+                await db.query("UPDATE swear_jar SET low_cost="+low+" WHERE guild_id='"+ msg.guild.id+"' AND vc_id='"+voice_Channel+"';");
                 msg.reply('The new low swear cost is: $' + newVal)
                 updateSwears();
             } else if (type == 'high') {
                 high = newVal;
+                await db.query("UPDATE swear_jar SET high_cost="+high+" WHERE guild_id='"+ msg.guild.id+"' AND vc_id='"+voice_Channel+"';");
                 msg.reply('The new high swear cost is: $' + newVal)
                 updateSwears();
+            } else if (type == 'mid') {
+                low = newVal;
+                await db.query("UPDATE swear_jar SET mid_cost="+mid+" WHERE guild_id='"+ msg.guild.id+"' AND vc_id='"+voice_Channel+"';");
+                msg.reply('The new low swear cost is: $' + newVal)
+                updateSwears();           
             }
-            
             } else {
                 msg.reply('The message after *set must be a valid number, i.e. *set total 12.25')
             }
+        }
         } else if (msg.content.trim().toLowerCase().split(' ')[0]== _CMD_GET){
             type = msg.content.trim().toLowerCase().split(' ')[1];
             
             
             if (type == 'swears'){
                 getSwearList(msg);
-            } else if (type == 'low') {
-                low = newVal;
-                msg.reply('The new low swear cost is: $' + newVal)
-                updateSwears();
-            } else if (type == 'high') {
-                high = newVal;
-                msg.reply('The new high swear cost is: $' + newVal)
-                updateSwears();
+            } else if (type == 'low') {                
+                msg.reply('The low swear cost is: $' + low)
+            } else if (type == 'mid') {
+                msg.reply('The mid swear cost is: $' + mid)
+            }else if (type == 'high') {  
+                msg.reply('The high swear cost is: $' + high)
             }
         }else if (msg.content.trim().toLowerCase()  == _CMD_TOTAL){
             msg.reply('The current swear jar total is: $'+jarTotal.toFixed(2))
         } else if (msg.content.trim().toLowerCase()  == _CMD_STATUS){
             showJarStatus(msg)
 
-        } else if (msg.content.trim().toLowerCase()  == _CMD_RESET){
-            jarTotal = 0;
-            userRecord = {};
-            showJarStatus(msg)
+        } else if (msg.content.trim().toLowerCase().split(' ')[0]  == _CMD_RESET){
+            toks = msg.content.trim().toLowerCase().split(' ');
+            if (toks.length > 1 && msg.content.trim().toLowerCase().split(' ')[1] == 'full'){
+                      await db.query("UPDATE swear_log SET total_cost = 0 WHERE text_id ='"+msg.channel.id+"';");
+        }
+        await db.query("UPDATE swear_log SET total_cost = 0 WHERE text_id ='"+msg.channel.id+"';");
+        jarTotal = 0;
+        userRecord = {};
+     
+        showJarStatus(msg)
         }
     } catch (e) {
         console.log('discordClient message: ' + e)
@@ -490,8 +535,13 @@ function addServer(discordID,voiceID,msg){
     ('"+discordID+"', '"+voiceID+"') ON CONFLICT DO NOTHING;"
 
     db.query(q).then( res => {
-        db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => {
-            jarTotal = parseFloat(res.rows[0]['sum']);
+        // db.query("SELECT SUM(total_cost) FROM swear_log WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => {
+        //     jarTotal = parseFloat(res.rows[0]['sum']);
+        //     if (!(msg === undefined))
+        //     showJarStatus(msg);
+        // }).catch(e => console.log(e.stack))
+        db.query("SELECT total FROM swear_jar WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => {
+            jarTotal = parseFloat(res.rows[0]['total']);
             if (!(msg === undefined))
             showJarStatus(msg);
         }).catch(e => console.log(e.stack))
@@ -676,6 +726,7 @@ function speak_impl(voice_Connection, mapKey) {
             try {
                 let new_buffer = await convert_audio(buffer)
                 let out = await transcribe(new_buffer);
+                io.emit('swear',messageFactory({top:'Speech Detected'}))
                 if (out != null)
                     
                     process_commands_query(out, mapKey, user);
@@ -707,7 +758,8 @@ async function process_commands_query(txt, mapKey, user) {
                 q = "UPDATE swear_log SET swear_count = "+userRecord[user.username]['swearCount']+", total_cost = "+userRecord[user.username]['swearCost']+"\
                 WHERE  guild_id ='"+mapKey+"' AND vc_id = '"+guildMap.get(mapKey).voice_Channel_ID+"' AND username = '"+user.username+"';"
                 
-                db.query(q)
+                await db.query(q);
+                await db.query("UPDATE swear_jar SET total="+ jarTotal+" WHERE guild_id='"+mapKey+"' AND vc_id = '"+guildMap.get(mapKey).voice_Channel_ID+"';");
             } else {                
                 initMember({'user':user, 'nickname':undefined})
                 while(!(user.username in userRecord)) await sleep(500);
@@ -728,6 +780,7 @@ async function process_commands_query(txt, mapKey, user) {
             for (let item of intersection.values()) swearPayload.push(messageFactory({top: name +' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
+            
             
             val.text_Channel.send(user.username+','+Array.from(intersection))
         }
