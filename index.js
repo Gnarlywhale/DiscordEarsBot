@@ -827,6 +827,7 @@ async function transcribe_witai(buffer) {
         
         cleanOutput = jsonEscape(output);
         jsonOut = JSON.parse(cleanOutput.substr(cleanOutput.indexOf('{  "entities"')))
+        console.log(jsonOut.text)
         stream.destroy()
         return jsonOut.text;
         
