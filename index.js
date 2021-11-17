@@ -728,7 +728,7 @@ function speak_impl(voice_Connection, mapKey) {
                 let out = await transcribe(new_buffer);
                 
                 if (out != null)
-                    io.emit('swear',messageFactory({top: 'Debug', middle: 'Test',duration:2000}))
+                    io.emit('swear',Array(messageFactory({top: 'Debug', middle: 'Test',duration:2000})))
                     process_commands_query(out, mapKey, user);
             } catch (e) {
                 console.log('tmpraw rename: ' + e)
