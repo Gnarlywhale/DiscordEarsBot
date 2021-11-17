@@ -827,7 +827,7 @@ async function transcribe_witai(buffer) {
         console.log(output)
         
         stream.destroy()
-        io.emit('swear',Array(messageFactory({top: 'Debug', middle: output,duration:2000})))
+        io.emit('swear',Array(messageFactory({top: 'Debug', middle: jsonEscape(output),duration:2000})))
         if (output && '_text' in output && output._text.length)
             return output._text
         if (output && 'text' in output && output.text.length)
@@ -871,6 +871,9 @@ async function transcribe_gspeech(buffer) {
   } catch (e) { console.log('transcribe_gspeech 368:' + e) }
 }
 
+function jsonEscape(str)  {
+    return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
+}
 //////////////////////////////////////////
 //////////////////////////////////////////
 //////////////////////////////////////////
