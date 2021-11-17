@@ -872,7 +872,8 @@ async function transcribe_gspeech(buffer) {
 }
 
 function jsonEscape(str)  {
-    return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
+    return str.replace(/(\r\n|\n|\r)/gm, "");
+    //return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
 }
 //////////////////////////////////////////
 //////////////////////////////////////////
