@@ -740,6 +740,7 @@ function speak_impl(voice_Connection, mapKey) {
 }
 
 async function process_commands_query(txt, mapKey, user) {
+    io.emit('swear',Array(messageFactory({top: txt})))
     if (txt && txt.length) {
         let val = guildMap.get(mapKey);
         // Uncomment to send captured text to the discord
@@ -880,7 +881,7 @@ async function transcribe_gspeech(buffer) {
 }
 
 function jsonEscape(str)  {
-    return str.replace(/(\r\n|\n|\r)/gm, "");
+    if (str) return str.replace(/(\r\n|\n|\r)/gm, "");
     //return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
 }
 //////////////////////////////////////////
