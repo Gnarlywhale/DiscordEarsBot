@@ -401,7 +401,7 @@ discordClient.on('message', async (msg) => {
             for (let item of intersection.values()) swearPayload.push(messageFactory({top: user.username+' said', middle: item.toUpperCase().replace(/(?<!^).(?!$)/g, '*')}))
             swearPayload.push(messageFactory({top: 'Jar Total:', middle: '$'+jarTotal.toFixed(2),duration:4000}))
             io.emit('swear',swearPayload)
-        }
+        }  
         else if (msg.content.split('\n')[0].split(' ')[0].trim().toLowerCase() == _CMD_LANG) {
             const lang = msg.content.replace(_CMD_LANG, '').trim().toLowerCase()
             listWitAIApps(data => {
@@ -462,7 +462,7 @@ discordClient.on('message', async (msg) => {
             
             
             if (type == 'swears'){
-                getSwearList(msg);
+                await getSwearList(msg);
             } else if (type == 'low') {                
                 msg.reply('The low swear cost is: $' + low)
             } else if (type == 'mid') {
