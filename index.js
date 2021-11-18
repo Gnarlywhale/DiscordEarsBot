@@ -503,8 +503,9 @@ async function getSwearList(msg){
         
         response = 'Swear List:\n';
         console.log(response)
-        console.log(res)
+        
         for (let row of res.rows) {
+            console.log(row)
             response += JSON.stringify(row) + "\n";        
         }
         //msg.reply(response);
