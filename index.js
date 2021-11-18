@@ -500,11 +500,14 @@ function query (text, params){
 }
 async function getSwearList(msg){
     db.query('SELECT * FROM swear_list;').then( res => {
+        
         response = 'Swear List:\n';
+        console.log(response)
+        console.log(res)
         for (let row of res.rows) {
             response += JSON.stringify(row) + "\n";        
         }
-        msg.reply(response);
+        //msg.reply(response);
     }).catch(e => console.error(e.stack))
     
    
