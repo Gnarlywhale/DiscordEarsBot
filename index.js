@@ -462,7 +462,11 @@ discordClient.on('message', async (msg) => {
             
             
             if (type == 'swears'){
-                await getSwearList(msg);
+                try {
+                    getSwearList(msg);
+                } catch(e){
+                    console.log('Get Swears Error: '+e)
+                }
             } else if (type == 'low') {                
                 msg.reply('The low swear cost is: $' + low)
             } else if (type == 'mid') {
