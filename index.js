@@ -506,9 +506,9 @@ async function getSwearList(msg){
         
         for (let row of res.rows) {
             console.log(row)
-            response += JSON.stringify(row) + "\n";        
+            response += JSON.stringify(row.word) + "\n";        
         }
-        //msg.reply(response);
+        msg.reply(response);
     }).catch(e => console.error(e.stack))
     
    
