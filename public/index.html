@@ -87,6 +87,9 @@
       socket.on('bot-disconnected',(payload)=> {
         console.log(payload);
         singleMessge(payload);
+      socket.on('test',(payload)=> {
+        console.log(payload);
+      })
 })
 
 // Should make a render queue
