@@ -502,9 +502,9 @@ discordClient.on('message', async (msg) => {
 function query (text, params){
     db.query(text,params)
 }
-async function insertSwear(msg){
- Console.log("Inserting the following phrase");
- Console.log(msg);
+function insertSwear(msg){
+ console.log("Inserting the following phrase");
+ console.log(msg);
  //db.query('INSERT INTO swear_list (guild_id) VALUES ('+msg+') ON CONFLICT DO NOTHING');
 
 }
