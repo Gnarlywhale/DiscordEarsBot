@@ -417,7 +417,7 @@ discordClient.on('message', async (msg) => {
                 })
               }
             })
-        } else if (msg.content.trim().toLowerCase().split(' ')[0] == _CMD_INSERT{
+        } else if (msg.content.trim().toLowerCase().split(' ')[0] == _CMD_INSERT){
                    toks = msg.content.trim().split(' ');
                    insertSwear(toks.slice(1).join(' '));
         } else if (msg.content.trim().toLowerCase().split(' ')[0]== _CMD_SET){
