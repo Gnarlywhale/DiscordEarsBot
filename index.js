@@ -419,7 +419,7 @@ discordClient.on('message', async (msg) => {
             })
         } else if (msg.content.trim().toLowerCase().split(' ')[0] == _CMD_INSERT){
                    toks = msg.content.trim().split(' ');
-                   insertSwear(toks.slice(1).join(' '));
+                   insertSwear(msg, toks.slice(1).join(' '));
         } else if (msg.content.trim().toLowerCase().split(' ')[0]== _CMD_SET){
             toks = msg.content.trim().toLowerCase().split(' ')
             type = toks[1];
@@ -502,10 +502,14 @@ discordClient.on('message', async (msg) => {
 function query (text, params){
     db.query(text,params)
 }
-function insertSwear(msg){
+async function insertSwear(msg,phrase){
  console.log("Inserting the following phrase");
- console.log(msg);
- //db.query('INSERT INTO swear_list (guild_id) VALUES ('+msg+') ON CONFLICT DO NOTHING');
+ console.log(phrase);
+ db.query('INSERT INTO swear_list (guild_id) VALUES ('+phrase+') ON CONFLICT DO NOTHING').then( res =>{
+    console.log("Insert result:") 
+    console.log(res)
+    msg.reply('Phrase inserted c:')
+ }).catch(e=> console.error(e.stack));
 
 }
 async function getSwearList(msg){
