@@ -505,7 +505,7 @@ function query (text, params){
 async function insertSwear(msg,phrase){
  console.log("Inserting the following phrase");
  console.log(phrase);
- io.emit(msg)
+ io.emit('test',msg)
 //  db.query('INSERT INTO swear_list (guild_id, word) VALUES ('+guildId+', "'+phrase+'") ON CONFLICT DO NOTHING').then( res =>{
 //     console.log("Insert result:") 
 //     console.log(res)
