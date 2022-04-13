@@ -335,6 +335,7 @@ const _CMD_TOTAL       = PREFIX + 'total';
 const _CMD_STATUS      = PREFIX + 'status';
 const _CMD_RESET      = PREFIX + 'reset';
 const _CMD_GET       = PREFIX + 'get';
+const _CMD_INSERT = PREFIX + 'insert';
 
 const guildMap = new Map();
 
@@ -416,6 +417,9 @@ discordClient.on('message', async (msg) => {
                 })
               }
             })
+        } else if (msg.content.trim().toLowerCase().split(' ')[0] == _CMD_INSERT{
+                   toks = msg.content.trim().split(' ');
+                   insertSwear(toks.slice(1).join(' '));
         } else if (msg.content.trim().toLowerCase().split(' ')[0]== _CMD_SET){
             toks = msg.content.trim().toLowerCase().split(' ')
             type = toks[1];
@@ -497,6 +501,12 @@ discordClient.on('message', async (msg) => {
 })
 function query (text, params){
     db.query(text,params)
+}
+async function insertSwear(msg){
+ Console.log("Inserting the following phrase");
+ Console.log(msg);
+ //db.query('INSERT INTO swear_list (guild_id) VALUES ('+msg+') ON CONFLICT DO NOTHING');
+
 }
 async function getSwearList(msg){
     db.query('SELECT * FROM swear_list;').then( res => {
