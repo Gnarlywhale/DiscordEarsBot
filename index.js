@@ -649,7 +649,7 @@ async function directConnect(mapKey, voice_id, member){
             if (!(msg === undefined))
             showJarStatus(msg);
         }).catch(e => console.log(e.stack))
-        
+
         voice_Connection.on('disconnect', async(e) => {
             if (e) console.log(e);
             guildMap.delete(mapKey);
@@ -775,7 +775,7 @@ function speak_impl(voice_Connection, mapKey) {
 
 async function process_commands_query(txt, mapKey, user) {
     //io.emit('swear',Array(messageFactory({top: txt})))
-    console.log("process command recieved:")
+    
     // console.log(txt)
     if (txt && txt.length) {
         let val = guildMap.get(mapKey);
@@ -795,10 +795,11 @@ async function process_commands_query(txt, mapKey, user) {
             }
         })
         
-        console.log(txt)
-        console.log(swearSet)
-        console.log(intersection)
+        // console.log(txt)
+        // console.log(swearSet)
+        // console.log(intersection)
         if (intersection.size > 0){
+            console.log("swear foumd!")
             // swearSum = 0;
             // intersection.forEach( (x) => swearSum += swearList[x])
             // jarTotal += swearSum
