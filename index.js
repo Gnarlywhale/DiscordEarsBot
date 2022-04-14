@@ -770,7 +770,7 @@ async function process_commands_query(txt, mapKey, user) {
         // Uncomment to send captured text to the discord
         // val.text_Channel.send(user.username + ': ' + txt)
         // Uncomment to send the captured text to the alert client
-        // io.emit('time', user.username + ': ' + txt)
+        io.emit('time', user.username + ': ' + txt)
         
         intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
         if (intersection.size > 0){
