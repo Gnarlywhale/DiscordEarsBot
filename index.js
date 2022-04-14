@@ -785,7 +785,8 @@ async function process_commands_query(txt, mapKey, user) {
             }
         })
         
-
+        console.log(txt)
+        console.log(swearSet)
         console.log(intersection)
         if (intersection.size > 0){
             // swearSum = 0;
