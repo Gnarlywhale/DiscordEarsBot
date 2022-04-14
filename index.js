@@ -490,9 +490,9 @@ discordClient.on('message', async (msg) => {
         } else if (msg.content.trim().toLowerCase().split(' ')[0]  == _CMD_RESET){
             toks = msg.content.trim().toLowerCase().split(' ');
             if (toks.length > 1 && msg.content.trim().toLowerCase().split(' ')[1] == 'full'){
-                      await db.query("UPDATE swear_log SET total_cost = 0 WHERE text_id ='"+msg.channel.id+"';");
+                      await db.query("UPDATE swear_log SET total_cost = 0 WHERE guild_id ='"+msg.guild.id+"';");
         }
-        await db.query("UPDATE swear_log SET total_cost = 0 WHERE text_id ='"+msg.channel.id+"';");
+        await db.query("UPDATE swear_log SET total_cost = 0 WHERE guild_id ='"+msg.guild.id+"';");
         jarTotal = 0;
         userRecord = {};
      
