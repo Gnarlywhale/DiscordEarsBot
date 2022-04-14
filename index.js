@@ -50,14 +50,14 @@ swearSet = new Set()
 // Add "suck my balls" as a 1 dollar swear
 async function updateSwears(guildId)
 {
-    db.query("SELECT high_cost, low_cost, mid_cost FROM swear_jar WHERE guild_id='"+guildID+"';").then( res => {
+    db.query("SELECT high_cost, low_cost, mid_cost FROM swear_jar WHERE guild_id='"+guildId+"';").then( res => {
 
         console.log('made it into the list of swears')
         console.log(res)
         low = Math.round(res.rows[0]["low_cost"] * 100) / 100;
         mid = Math.round(res.rows[0]["mid_cost"] * 100) / 100;
         high = Math.round(res.rows[0]["high_cost"] * 100) / 100;
-        db.query("SELECT * FROM swear_list WHERE guild_id='"+guildID+"';").then(res =>{
+        db.query("SELECT * FROM swear_list WHERE guild_id='"+guildId+"';").then(res =>{
             for(row in res.rows){
                 if(row['rank'] == 1) cost = low;
                 if(row['rank'] == 2) cost = mid;
