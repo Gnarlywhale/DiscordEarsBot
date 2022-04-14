@@ -516,7 +516,7 @@ async function insertSwear(msg,phrase){
     console.log(res)
     msg.reply('Phrase inserted c:')
  }).catch(e=> console.error(e.stack));
- updateswears(msg.guild.id)
+ updateSwears(msg.guild.id)
 }
 async function getSwearList(msg){
     db.query("SELECT * FROM swear_list WHERE guild_id ='"+msg.guild.id+"'").then( res => {
