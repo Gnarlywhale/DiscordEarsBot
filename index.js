@@ -506,12 +506,12 @@ async function insertSwear(msg,phrase){
  console.log("Inserting the following phrase");
  console.log(phrase);
  //io.emit('test',msg)
- //console.log(msg)
- db.query("INSERT INTO swear_list (guild_id, word) VALUES ('"+msg.id+"', '"+phrase+"') ON CONFLICT DO NOTHING").then( res =>{
-    console.log("Insert result:") 
-    console.log(res)
-    msg.reply('Phrase inserted c:')
- }).catch(e=> console.error(e.stack));
+ console.log(msg)
+//  db.query("INSERT INTO swear_list (guild_id, word) VALUES ('"+msg.id+"', '"+phrase+"') ON CONFLICT DO NOTHING").then( res =>{
+//     console.log("Insert result:") 
+//     console.log(res)
+//     msg.reply('Phrase inserted c:')
+//  }).catch(e=> console.error(e.stack));
 
 }
 async function getSwearList(msg){
