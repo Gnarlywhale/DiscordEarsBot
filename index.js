@@ -766,7 +766,7 @@ function speak_impl(voice_Connection, mapKey) {
 async function process_commands_query(txt, mapKey, user) {
     //io.emit('swear',Array(messageFactory({top: txt})))
     console.log("process command recieved:")
-    console.log(txt)
+    // console.log(txt)
     if (txt && txt.length) {
         let val = guildMap.get(mapKey);
         // Uncomment to send captured text to the discord
@@ -775,6 +775,7 @@ async function process_commands_query(txt, mapKey, user) {
         io.emit('time', user.username + ': ' + txt)
         
         intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
+        console.log(intersection)
         if (intersection.size > 0){
             swearSum = 0;
             intersection.forEach( (x) => swearSum += swearList[x])
