@@ -568,7 +568,7 @@ function addServer(discordID,voiceID,msg){
         //     if (!(msg === undefined))
         //     showJarStatus(msg);
         // }).catch(e => console.log(e.stack))
-        db.query("SELECT total FROM swear_jar WHERE guild_id = '"+discordID+"' AND vc_id = '"+voiceID+"';").then(res => {
+        db.query("SELECT total FROM swear_jar WHERE guild_id = '"+discordID+"';").then(res => {
             jarTotal = parseFloat(res.rows[0]['total']);
             if (!(msg === undefined))
             showJarStatus(msg);
@@ -644,6 +644,12 @@ async function directConnect(mapKey, voice_id, member){
         members.forEach(member => initMember(member,mapKey,member.voice.channelID,res.rows[0]['text_id']));
         // ^ add to swear_log if not present
         speak_impl(voice_Connection, mapKey)
+        db.query("SELECT total FROM swear_jar WHERE guild_id = '"+discordID+"';").then(res => {
+            jarTotal = parseFloat(res.rows[0]['total']);
+            if (!(msg === undefined))
+            showJarStatus(msg);
+        }).catch(e => console.log(e.stack))
+        
         voice_Connection.on('disconnect', async(e) => {
             if (e) console.log(e);
             guildMap.delete(mapKey);
