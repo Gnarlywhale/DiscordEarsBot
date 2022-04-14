@@ -774,12 +774,23 @@ async function process_commands_query(txt, mapKey, user) {
         // Uncomment to send the captured text to the alert client
         io.emit('time', user.username + ': ' + txt)
         
-        intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
+        //intersection = new Set(txt.split(' ').filter( x=> swearSet.has(x)))
+        intersection = new Set()
+        swearSum = 0;
+        
+        swearSet.forEach((x) => {
+            if (txt.toLowerCase().includes(x)){
+                intersection.add(x)
+                swearSum += swearList[x]
+            }
+        })
+        
+
         console.log(intersection)
         if (intersection.size > 0){
-            swearSum = 0;
-            intersection.forEach( (x) => swearSum += swearList[x])
-            jarTotal += swearSum
+            // swearSum = 0;
+            // intersection.forEach( (x) => swearSum += swearList[x])
+            // jarTotal += swearSum
             if (user.username in userRecord){
                  
                 userRecord[user.username]['swearCount'] += intersection.size;
@@ -875,6 +886,7 @@ async function transcribe_witai(buffer) {
 // Google Speech API
 // https://cloud.google.com/docs/authentication/production
 const gspeech = require('@google-cloud/speech');
+const { matches } = require('underscore');
 const gspeechclient = new gspeech.SpeechClient({
   projectId: 'discordbot',
   keyFilename: 'gspeech_key.json'
