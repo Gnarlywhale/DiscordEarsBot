@@ -51,8 +51,6 @@ swearSet = new Set()
 async function updateSwears(guildId)
 {
     db.query("SELECT high_cost, low_cost, mid_cost FROM swear_jar WHERE guild_id='"+guildId+"';").then( res => {
-
-        console.log('made it into the list of swears')
         
         low = Math.round(res.rows[0]["low_cost"] * 100) / 100;
         mid = Math.round(res.rows[0]["mid_cost"] * 100) / 100;
@@ -61,8 +59,6 @@ async function updateSwears(guildId)
             
             for(i in res.rows){
                 row = res.rows[i];
-                console.log('SWEARS:')
-                console.log(row)
                 if(row['rank'] == 1) cost = low;
                 if(row['rank'] == 2) cost = mid;
                 if(row['rank'] == 3) cost = high;
@@ -929,7 +925,7 @@ async function transcribe_gspeech(buffer) {
 }
 
 function jsonEscape(str)  {
-    if (str) return str.replace(/(\r\n|\n|\r)/gm, "");
+    if (str && (typeof str) == "string") return str.replace(/(\r\n|\n|\r)/gm, "");
     //return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
 }
 //////////////////////////////////////////
