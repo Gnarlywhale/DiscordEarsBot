@@ -65,7 +65,7 @@ async function updateSwears(guildId)
                 console.log('we lost?')
                 console.log(row['word'])
                 console.log(cost)
-                swearList[row["word"]] = cost;
+                swearList[row['word']] = cost;
                 console.log(swearList)
 
             }
@@ -796,7 +796,14 @@ async function process_commands_query(txt, mapKey, user) {
         swearSet.forEach((x) => {
             if (txt.toLowerCase().includes(x)){
                 intersection.add(x)
+                console.log('we finding it')
+                console.log("phrase:")
+                console.log(x)
+                console.log('swearList')
+                console.log('swear cost')
+                console.log(swearList[x])
                 swearSum += swearList[x]
+                
             }
         })
         
