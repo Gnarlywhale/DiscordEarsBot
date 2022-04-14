@@ -62,7 +62,12 @@ async function updateSwears(guildId)
                 if(row['rank'] == 1) cost = low;
                 if(row['rank'] == 2) cost = mid;
                 if(row['rank'] == 3) cost = high;
+                console.log('we lost?')
+                console.log(row['word'])
+                console.log(cost)
                 swearList[row["word"]] = cost;
+                console.log(swearList)
+
             }
             swearSet = new Set(Object.keys(swearList));
         }).catch(e => console.error(e.stack))
