@@ -432,7 +432,7 @@ discordClient.on('message', async (msg) => {
                 cost = toks[toks.length-1];
                 cost = Math.round(cost * 100) / 100;
                 await db.query("UPDATE swear_list SET custom_cost="+cost+" WHERE word='"+word+"';");
-                updateSwears();
+                updateSwears(msg.guild.id);
             }else {
             
       
@@ -449,17 +449,17 @@ discordClient.on('message', async (msg) => {
                 low = newVal;
                 await db.query("UPDATE swear_jar SET low_cost="+low+" WHERE guild_id='"+ msg.guild.id+"' AND vc_id='"+voice_Channel+"';");
                 msg.reply('The new low swear cost is: $' + newVal)
-                updateSwears();
+                updateSwears(msg.guild.id);
             } else if (type == 'high') {
                 high = newVal;
                 await db.query("UPDATE swear_jar SET high_cost="+high+" WHERE guild_id='"+ msg.guild.id+"' AND vc_id='"+voice_Channel+"';");
                 msg.reply('The new high swear cost is: $' + newVal)
-                updateSwears();
+                updateSwears(msg.guild.id);
             } else if (type == 'mid') {
                 low = newVal;
                 await db.query("UPDATE swear_jar SET mid_cost="+mid+" WHERE guild_id='"+ msg.guild.id+"' AND vc_id='"+voice_Channel+"';");
                 msg.reply('The new low swear cost is: $' + newVal)
-                updateSwears();           
+                updateSwears(msg.guild.id);           
             }
             } else {
                 msg.reply('The message after *set must be a valid number, i.e. *set total 12.25')
