@@ -5,6 +5,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <!-- Palette referecnce https://coolors.co/00e9e2-ff7984-f7a25f-65e7bb-ec83ab-9384e3 -->
     <style>
+    #textplacement{
+      padding-left: 150;
+    }
       body{
         font-family: 'Anton', sans-serif;
         text-shadow: 2px 2px #000000;
@@ -24,6 +27,8 @@
         width:612px;
       position:relative;
       text-align:center;
+      padding-left:150px;
+      padding-top:15px;
       }
     #jar {
       opacity: 0;
@@ -41,6 +46,7 @@
 
 100% {transform: rotate(20deg)}
 }
+
     .text{
       position:absolute;
       left: 50%;
@@ -193,9 +199,11 @@ async function singleMessage(payload){
     <p id="server-time"></p>
     <div id=jarDiv>
       <img src='./jar.png' id='jar' style="width:100%" class="fadeable"/>
-      <h2 id="top-text" class='fadeable text'></h2>
-      <h1 id="middle-text" class='fadeable text'></h1>
-      <h2 id="bot-text" class='fadeable text'></h2>
+      <div id='textplacement'>
+        <h2 id="top-text" class='fadeable text'></h2>
+        <h1 id="middle-text" class='fadeable text'></h1>
+        <h2 id="bot-text" class='fadeable text'></h2>
+    </div>
     </div>
   </body>
 </html
