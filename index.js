@@ -365,6 +365,9 @@ discordClient.on('message', async (msg) => {
             } else {
                 if (!guildMap.has(mapKey)){
                     await connect(msg, mapKey);
+                    // Should probably make swear set a set of swear words by guild TODO 
+                    updateSwears(msg.guild.id);
+                    console.log(swearSet)
                     //initMember(msg.member,mapKey,msg.member.voice.channelID,msg.channel.id)                 
                     io.emit('bot-connected',Array(messageFactory({middle:'Swear Jar Connected'})))
                 }else
