@@ -796,22 +796,17 @@ async function process_commands_query(txt, mapKey, user) {
         swearSet.forEach((x) => {
             if (txt.toLowerCase().includes(x)){
                 intersection.add(x)
-                console.log('we finding it')
-                console.log("phrase:")
-                console.log(x)
-                console.log('swearList')
-                console.log('swear cost')
-                console.log(swearList[x])
+
                 swearSum += swearList[x]
                 
             }
         })
-        
+        jarTotal += swearSum
         // console.log(txt)
         // console.log(swearSet)
         // console.log(intersection)
         if (intersection.size > 0){
-            console.log("swear foumd!")
+
             // swearSum = 0;
             // intersection.forEach( (x) => swearSum += swearList[x])
             // jarTotal += swearSum
@@ -819,11 +814,13 @@ async function process_commands_query(txt, mapKey, user) {
                  
                 userRecord[user.username]['swearCount'] += intersection.size;
                 userRecord[user.username]['swearCost'] += swearSum;
+                // q = "UPDATE swear_log SET swear_count = "+userRecord[user.username]['swearCount']+", total_cost = "+userRecord[user.username]['swearCost']+"\
+                // WHERE  guild_id ='"+mapKey+"' AND vc_id = '"+guildMap.get(mapKey).voice_Channel_ID+"' AND username = '"+user.username+"';"
                 q = "UPDATE swear_log SET swear_count = "+userRecord[user.username]['swearCount']+", total_cost = "+userRecord[user.username]['swearCost']+"\
-                WHERE  guild_id ='"+mapKey+"' AND vc_id = '"+guildMap.get(mapKey).voice_Channel_ID+"' AND username = '"+user.username+"';"
-                
+                WHERE  guild_id ='"+mapKey+"' AND username = '"+user.username+"';"
                 await db.query(q);
-                await db.query("UPDATE swear_jar SET total="+ jarTotal+" WHERE guild_id='"+mapKey+"' AND vc_id = '"+guildMap.get(mapKey).voice_Channel_ID+"';");
+                // await db.query("UPDATE swear_jar SET total="+ jarTotal+" WHERE guild_id='"+mapKey+"' AND vc_id = '"+guildMap.get(mapKey).voice_Channel_ID+"';");
+                await db.query("UPDATE swear_jar SET total="+ jarTotal+" WHERE guild_id='"+mapKey+"';");
             } else {                
                 initMember({'user':user, 'nickname':undefined})
                 while(!(user.username in userRecord)) await sleep(500);
