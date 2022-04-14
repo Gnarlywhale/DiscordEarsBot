@@ -765,6 +765,8 @@ function speak_impl(voice_Connection, mapKey) {
 
 async function process_commands_query(txt, mapKey, user) {
     //io.emit('swear',Array(messageFactory({top: txt})))
+    console.log("process command recieved:")
+    console.log(txt)
     if (txt && txt.length) {
         let val = guildMap.get(mapKey);
         // Uncomment to send captured text to the discord
