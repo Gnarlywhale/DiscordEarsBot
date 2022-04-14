@@ -59,7 +59,8 @@ async function updateSwears(guildId)
         high = Math.round(res.rows[0]["high_cost"] * 100) / 100;
         db.query("SELECT * FROM swear_list WHERE guild_id='"+guildId+"';").then(res =>{
             
-            for(row in res.rows){
+            for(i in res.rows){
+                row = res.rows[i];
                 console.log('SWEARS:')
                 console.log(row)
                 if(row['rank'] == 1) cost = low;
