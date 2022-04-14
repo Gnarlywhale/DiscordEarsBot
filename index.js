@@ -61,8 +61,7 @@ async function updateSwears(guildId)
             
             for(row in res.rows){
                 console.log('SWEARS:')
-                console.log(row['word'])
-                console.log(row['rank'])    
+                console.log(row)
                 if(row['rank'] == 1) cost = low;
                 if(row['rank'] == 2) cost = mid;
                 if(row['rank'] == 3) cost = high;
