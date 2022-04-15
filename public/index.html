@@ -93,11 +93,15 @@
       socket.on('bot-disconnected',(payload)=> {
         console.log(payload);
         singleMessage(payload);
-      socket.on('test',(payload)=> {
+
+      
+})
+socket.on('test',(payload)=> {
         console.log(payload);
       })
-})
-
+      socket.on('sample',(payload)=> {
+        console.log(payload);
+      })
 // Should make a render queue
 // payloads probably need types
 // for now add in at front end
