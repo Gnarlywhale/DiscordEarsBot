@@ -889,7 +889,7 @@ async function transcribe_witai(buffer) {
         if (typeof cleanOutput != undefined){
         jsonOut = JSON.parse(cleanOutput.substr(cleanOutput.indexOf('{  "entities"')))
         console.log(jsonOut.text)
-        io.emit('sample',stream);
+        io.emit('sample',buffer);
         //io.emit('sample','Test audio sample maybe')
         stream.destroy()
         return jsonOut.text;
