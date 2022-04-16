@@ -75,6 +75,7 @@
       isRendering = 0;
       let socket = io();
       let el;
+      var stream;
       socket.on("connect", () => {
   console.log(socket.connected); // true
 });
@@ -100,7 +101,8 @@ socket.on('test',(payload)=> {
         console.log(payload);
       })
       socket.on('sample',(payload)=> {
-        console.log(payload);
+        //console.log(payload);
+        stream = payload;
       })
 // Should make a render queue
 // payloads probably need types
